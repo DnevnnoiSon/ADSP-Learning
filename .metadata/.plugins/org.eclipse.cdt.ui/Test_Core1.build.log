@@ -1,0 +1,50 @@
+14:08:40 **** Build of configuration Debug for project Test_Core1 ****
+make all 
+'Building file: ../system/startup_ldf/app_cplbtab.c'
+'Invoking: CrossCore Blackfin C/C++ Compiler'
+ccblkfn -c -file-attr ProjectName="Test_Core1" -proc ADSP-BF607 -flags-compiler --no_wrap_diagnostics -si-revision 0.2 -g -DCORE1 -D_DEBUG -DADI_MCAPI @includes-6e5839dc4052e59f17b8313d2164df86.txt -structs-do-not-overlap -no-const-strings -no-multiline -warn-protos -double-size-32 -decls-strong -cplbs -gnu-style-dependencies -MD -Mo "system/startup_ldf/app_cplbtab.d" -o "system/startup_ldf/app_cplbtab.doj" "../system/startup_ldf/app_cplbtab.c"
+'Finished building: ../system/startup_ldf/app_cplbtab.c'
+' '
+'Building file: ../system/startup_ldf/app_handler_table.c'
+'Invoking: CrossCore Blackfin C/C++ Compiler'
+ccblkfn -c -file-attr ProjectName="Test_Core1" -proc ADSP-BF607 -flags-compiler --no_wrap_diagnostics -si-revision 0.2 -g -DCORE1 -D_DEBUG -DADI_MCAPI @includes-6e5839dc4052e59f17b8313d2164df86.txt -structs-do-not-overlap -no-const-strings -no-multiline -warn-protos -double-size-32 -decls-strong -cplbs -gnu-style-dependencies -MD -Mo "system/startup_ldf/app_handler_table.d" -o "system/startup_ldf/app_handler_table.doj" "../system/startup_ldf/app_handler_table.c"
+'Finished building: ../system/startup_ldf/app_handler_table.c'
+' '
+'Building file: ../system/startup_ldf/app_heaptab.c'
+'Invoking: CrossCore Blackfin C/C++ Compiler'
+ccblkfn -c -file-attr ProjectName="Test_Core1" -proc ADSP-BF607 -flags-compiler --no_wrap_diagnostics -si-revision 0.2 -g -DCORE1 -D_DEBUG -DADI_MCAPI @includes-6e5839dc4052e59f17b8313d2164df86.txt -structs-do-not-overlap -no-const-strings -no-multiline -warn-protos -double-size-32 -decls-strong -cplbs -gnu-style-dependencies -MD -Mo "system/startup_ldf/app_heaptab.d" -o "system/startup_ldf/app_heaptab.doj" "../system/startup_ldf/app_heaptab.c"
+'Finished building: ../system/startup_ldf/app_heaptab.c'
+' '
+'Building file: ../system/startup_ldf/app_startup.s'
+'Invoking: CrossCore Blackfin Assembler'
+easmblkfn -file-attr ProjectName="Test_Core1" -proc ADSP-BF607 -si-revision 0.2 -g -DCORE1 -D_DEBUG -DADI_MCAPI @includes-7cca568445bca36c1ff7e81874d6327d.txt -gnu-style-dependencies -MM -Mo "system/startup_ldf/app_startup.d" -o "system/startup_ldf/app_startup.doj" "../system/startup_ldf/app_startup.s"
+'Finished building: ../system/startup_ldf/app_startup.s'
+' '
+'Building file: ../system/pinmux/GeneratedSources/pinmux_config.c'
+'Invoking: CrossCore Blackfin C/C++ Compiler'
+ccblkfn -c -file-attr ProjectName="Test_Core1" -proc ADSP-BF607 -flags-compiler --no_wrap_diagnostics -si-revision 0.2 -g -DCORE1 -D_DEBUG -DADI_MCAPI @includes-6e5839dc4052e59f17b8313d2164df86.txt -structs-do-not-overlap -no-const-strings -no-multiline -warn-protos -double-size-32 -decls-strong -cplbs -gnu-style-dependencies -MD -Mo "system/pinmux/GeneratedSources/pinmux_config.d" -o "system/pinmux/GeneratedSources/pinmux_config.doj" "../system/pinmux/GeneratedSources/pinmux_config.c"
+'Finished building: ../system/pinmux/GeneratedSources/pinmux_config.c'
+' '
+'Building file: ../system/mcapi/GeneratedSources/mcapi_config.c'
+'Invoking: CrossCore Blackfin C/C++ Compiler'
+ccblkfn -c -file-attr ProjectName="Test_Core1" -proc ADSP-BF607 -flags-compiler --no_wrap_diagnostics -si-revision 0.2 -g -DCORE1 -D_DEBUG -DADI_MCAPI @includes-6e5839dc4052e59f17b8313d2164df86.txt -structs-do-not-overlap -no-const-strings -no-multiline -warn-protos -double-size-32 -decls-strong -cplbs -gnu-style-dependencies -MD -Mo "system/mcapi/GeneratedSources/mcapi_config.d" -o "system/mcapi/GeneratedSources/mcapi_config.doj" "../system/mcapi/GeneratedSources/mcapi_config.c"
+'Finished building: ../system/mcapi/GeneratedSources/mcapi_config.c'
+' '
+'Building file: ../system/adi_initialize.c'
+'Invoking: CrossCore Blackfin C/C++ Compiler'
+ccblkfn -c -file-attr ProjectName="Test_Core1" -proc ADSP-BF607 -flags-compiler --no_wrap_diagnostics -si-revision 0.2 -g -DCORE1 -D_DEBUG -DADI_MCAPI @includes-6e5839dc4052e59f17b8313d2164df86.txt -structs-do-not-overlap -no-const-strings -no-multiline -warn-protos -double-size-32 -decls-strong -cplbs -gnu-style-dependencies -MD -Mo "system/adi_initialize.d" -o "system/adi_initialize.doj" "../system/adi_initialize.c"
+'Finished building: ../system/adi_initialize.c'
+' '
+'Building file: ../src/Test_Core1.c'
+'Invoking: CrossCore Blackfin C/C++ Compiler'
+ccblkfn -c -file-attr ProjectName="Test_Core1" -proc ADSP-BF607 -flags-compiler --no_wrap_diagnostics -si-revision 0.2 -g -DCORE1 -D_DEBUG -DADI_MCAPI @includes-6e5839dc4052e59f17b8313d2164df86.txt -structs-do-not-overlap -no-const-strings -no-multiline -warn-protos -double-size-32 -decls-strong -cplbs -gnu-style-dependencies -MD -Mo "src/Test_Core1.d" -o "src/Test_Core1.doj" "../src/Test_Core1.c"
+'Finished building: ../src/Test_Core1.c'
+' '
+'Building target: Test_Core1.dxe'
+'Invoking: CrossCore Blackfin Linker'
+ccblkfn -proc ADSP-BF607 -si-revision 0.2 -TC:/Users/Admin/cces/2.8.0/test_project/Test_Core1/system/startup_ldf/app.ldf -no-mem -LC:/Users/Admin/cces/2.8.0/test_project/Test_Core1/Debug/system/startup_ldf -flags-link -MDCORE1,-MDOTHERCORE,-MDDEBUG -add-debug-libpaths -o Test_Core1.dxe @input-file.txt  -flags-link -od,.\.
+'Finished building target: Test_Core1.dxe'
+' '
+
+14:08:48 Build Finished (took 8s.240ms)
+
