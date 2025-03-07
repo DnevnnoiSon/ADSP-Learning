@@ -1,3 +1,5 @@
 .metadata/
+.metadata/.log
+.metadata/.plugins/
 Test_Core0/Debug
 Test_Core1/Debug

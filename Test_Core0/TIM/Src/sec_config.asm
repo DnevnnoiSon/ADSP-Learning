@@ -6,7 +6,7 @@
 
 #define ld32(R,value) 				R##.L = LO(value); R##.H = HI(value)						
 #define ldAddr(P, value)			P##.L = 0; P##.H = HI(value)
-/*
+
 .SECTION program
 .ALIGN 4;
 .GLOBAL _SEC_Init;	// Привязка: [EVENT <==> _sec_dispetcher]
@@ -28,7 +28,7 @@ _SEC_Init:
 
 	RTS;	
 _SEC_Init.end:
-*/
+
 //======================================================================
 .SECTION program
 .ALIGN 4;
