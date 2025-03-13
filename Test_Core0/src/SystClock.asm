@@ -1,7 +1,6 @@
 #include "defBF607.h"
 #include "SystClock.h"
 
-
 // R0 - Опрашиваемый Регистр
 // R1 - Значение маски
 #define  REG_SET_MASKOR(Reg1, Reg2)			Reg1 = Reg1 & Reg2 //OR MASK										
@@ -20,6 +19,7 @@ _SystClock.init:
 	 CALL _Set_Kofficient;
 	 
     //Изменение частоты PLL:
+    CALL _Change_PLL_Frequency;
     
     //Проверка завершения процесса:
      R0 = 0;
@@ -121,9 +121,78 @@ _Set_Kofficient.Align_Wait:
     R1 = 0(Z);
   	CC = R0 == R1;
   	IF CC JUMP _Set_Kofficient.Align_Wait;
-
+  	
 	RTS;
 _Set_Kofficient.end:
+
+//================ ИЗМЕНЕНИЕ ЧАСТОТЫ PLL ===================
+.GLOBAL _Change_PLL_Frequency
+.SECTION program
+.ALIGN 4;
+_Change_PLL_Frequency:
+	   
+    P0.L = LO(REG_CGU0_STAT);
+    P0.H = HI(REG_CGU0_STAT);
+    R0 = [P0];
+
+    R1.L = LO(BITM_CGU_STAT_PLOCKERR);
+    R1.H = HI(BITM_CGU_STAT_PLOCKERR);
+    BITCLR(R0, BITP_CGU_STAT_PLOCKERR); 
+
+    [P0] = R0;  
+
+    P0.L = LO(REG_CGU0_CTL);
+    P0.H = HI(REG_CGU0_CTL);
+    R0 = [P0];
+
+    R1.L = LO(BITM_CGU_CTL_PLLBP);
+    R1.H = HI(BITM_CGU_CTL_PLLBP);
+    R0 = R0 | R1; 
+
+    [P0] = R0;  
+
+    P0.L = LO(REG_CGU0_CTL);
+    P0.H = HI(REG_CGU0_CTL);
+    R0 = [P0];
+
+    R1 = 0x3F;  
+    R1 = ~R1;
+    R0 = R0 & R1; 
+
+    R1 = 0x14; 
+    R0 = R0 | R1;
+
+    [P0] = R0;  
+   
+    P0.L = LO(REG_CGU0_CTL);
+    P0.H = HI(REG_CGU0_CTL);
+    R0 = [P0];
+
+    BITCLR(R0, BITP_CGU_STAT_PLLBP); 
+
+    [P0] = R0;  
+
+_PLL_Wait_Lock:
+    P0.L = LO(REG_CGU0_STAT);
+    P0.H = HI(REG_CGU0_STAT);
+    R0 = [P0];
+
+    CC = BITTST(R0, BITP_CGU_STAT_PLOCK);
+    IF !CC JUMP _PLL_Wait_Lock;  
+
+_PLL_Wait_Align:
+    P0.L = LO(REG_CGU0_STAT);
+    P0.H = HI(REG_CGU0_STAT);
+    R0 = [P0];
+
+    R1 = (1 << 8);
+    R0 = R0 & R1;  
+    R1 = 0(Z);
+    CC = R0 == R1;
+    IF CC JUMP _PLL_Wait_Align;
+
+    RTS; 
+_Change_PLL_Frequency.end:
 
 
 
