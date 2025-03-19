@@ -20,11 +20,11 @@ _SystClock.init:
 	 CALL _Set_Kofficient;
 	 
     //Изменение частоты PLL:
-    CALL _Change_PLL_Frequency;
+     CALL _Change_PLL_Frequency;
     
     //Проверка завершения процесса:
      R0 = 0;
-    CALL _Check_temp_SystClock;
+     CALL _Check_temp_SystClock;
 	 RTS;
 _SystClock.error:
 //Опрос кодов ошибок
@@ -42,7 +42,6 @@ _SystClock.end:
 _Check_temp_SystClock:
 	R3 = R0;	//Выгрузка выбора наложения макси
 _Check_temp_SystClock.Start:
-	R2 = 0;		//Флаг
     P0.L =  LO(REG_CGU0_STAT);	
     P0.H =  HI(REG_CGU0_STAT);
 	R0 = [P0];
@@ -51,13 +50,13 @@ _Check_temp_SystClock.Start:
 	R1.H = HI(BITM_CGU_STAT_PLLEN);
 	REG_SET_MASKOR(R0, R1);
 	CC = R0 == R1;
-	R2 = R2 | CC;
+	IF !CC JUMP _Check_temp_SystClock.Start;
 //============ Наложение маски =================	
 	R1.L = LO(BITM_CGU_STAT_PLOCK);
 	R1.H = HI(BITM_CGU_STAT_PLOCK);
 	REG_SET_MASKOR(R0, R1);
 	CC = R0 == R1;
-	R2 = R2 | CC;
+	IF !CC JUMP _Check_temp_SystClock.Start;
 //=========== Выбор наложения маски ============================
 	R1 = 0(Z);
 	CC = R3 == R1;
@@ -68,7 +67,7 @@ _Check_temp_SystClock.PLOCKERR:
 	R1.H = HI(BITM_CGU_STAT_PLOCKERR);	
 	REG_SET_MASKOR(R0, R1);
 	CC = R0 == R1;
-	R2 = R2 | CC;
+	IF !CC JUMP _Check_temp_SystClock.Start;
 //============ Наложение маски =================	
 	JUMP _Check_temp_SystClock.CLKSALGN;
 _Check_temp_SystClock.PLLBP:
@@ -76,7 +75,7 @@ _Check_temp_SystClock.PLLBP:
 	R1.H = HI(BITM_CGU_STAT_PLLBP);	
 	REG_SET_MASKOR(R0, R1);
 	CC = R0 == R1;
-	R2 = R2 | CC;
+	IF !CC JUMP _Check_temp_SystClock.Start;
 //===============================================================
 //============ Наложение маски =================
 _Check_temp_SystClock.CLKSALGN:
@@ -84,11 +83,7 @@ _Check_temp_SystClock.CLKSALGN:
 	R1.H = HI(BITM_CGU_STAT_CLKSALGN);	
 	REG_SET_MASKAND(R0, R1);
 	CC = R0 == R1;
-	R2 = R2 | CC;
-//==== проверка флага на ноль ======
-	R1 = 1; 
-	CC = R2 == R1;		
-	IF CC _Check_temp_SystClock.Start;
+	IF !CC JUMP _Check_temp_SystClock.Start;
 	
 	[P0] = R0;
 	RTS;
