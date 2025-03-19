@@ -3,8 +3,9 @@
 
 // R0 - Опрашиваемый Регистр
 // R1 - Значение маски
-#define  REG_SET_MASKOR(Reg1, Reg2)			Reg1 = Reg1 & Reg2 //OR MASK										
-#define  REG_SET_MASKANDK(Reg1, Reg2)		Reg1 = Reg1 | Reg2 //AND MASK
+#define  REG_SET_MASKAND(Reg1, Reg2) 	Reg2 = Reg1 & Reg2  //AND MASK								
+#define  REG_SET_MASKOR(Reg1, Reg2)		Reg2 = Reg1 | Reg2  //OR MASK
+						
 												
 .GLOBAL _SystClock;	
 .SECTION program
@@ -39,44 +40,61 @@ _SystClock.end:
 .SECTION program
 .ALIGN 4;
 _Check_temp_SystClock:
-	R3 = R0;
+	R3 = R0;	//Выгрузка выбора наложения макси
+_Check_temp_SystClock.Start:
+	R2 = 0;		//Флаг
     P0.L =  LO(REG_CGU0_STAT);	
     P0.H =  HI(REG_CGU0_STAT);
-
 	R0 = [P0];
-
+//============ Наложение маски =================
 	R1.L = LO(BITM_CGU_STAT_PLLEN);	
-	R1.h = HI(BITM_CGU_STAT_PLLEN);
-	REG_SET_MASKANDK(R0, R1);
-
+	R1.H = HI(BITM_CGU_STAT_PLLEN);
+	REG_SET_MASKOR(R0, R1);
+	CC = R0 == R1;
+	R2 = R2 | CC;
+//============ Наложение маски =================	
 	R1.L = LO(BITM_CGU_STAT_PLOCK);
 	R1.H = HI(BITM_CGU_STAT_PLOCK);
-	REG_SET_MASKANDK(R0, R1);
-	
+	REG_SET_MASKOR(R0, R1);
+	CC = R0 == R1;
+	R2 = R2 | CC;
+//=========== Выбор наложения маски ============================
 	R1 = 0(Z);
 	CC = R3 == R1;
 	IF CC JUMP _Check_temp_SystClock.PLLBP;
+//============ Наложение маски =================
 _Check_temp_SystClock.PLOCKERR:
 	R1.L = LO(BITM_CGU_STAT_PLOCKERR);	
 	R1.H = HI(BITM_CGU_STAT_PLOCKERR);	
-	REG_SET_MASKANDK(R0, R1);
-	
+	REG_SET_MASKOR(R0, R1);
+	CC = R0 == R1;
+	R2 = R2 | CC;
+//============ Наложение маски =================	
 	JUMP _Check_temp_SystClock.CLKSALGN;
 _Check_temp_SystClock.PLLBP:
 	R1.L = LO(BITM_CGU_STAT_PLLBP);	
 	R1.H = HI(BITM_CGU_STAT_PLLBP);	
-	REG_SET_MASKANDK(R0, R1);
-
+	REG_SET_MASKOR(R0, R1);
+	CC = R0 == R1;
+	R2 = R2 | CC;
+//===============================================================
+//============ Наложение маски =================
 _Check_temp_SystClock.CLKSALGN:
 	R1.L = LO(BITM_CGU_STAT_CLKSALGN);	
 	R1.H = HI(BITM_CGU_STAT_CLKSALGN);	
-	REG_SET_MASKOR(R0, R1);
+	REG_SET_MASKAND(R0, R1);
+	CC = R0 == R1;
+	R2 = R2 | CC;
+//==== проверка флага на ноль ======
+	R1 = 1; 
+	CC = R2 == R1;		
+	IF CC _Check_temp_SystClock.Start;
 	
 	[P0] = R0;
 	RTS;
 _Check_temp_SystClock.end:
 
-//================ НАТСРОЙКА ЧАСТОТЫ ДЕЛЕНИЯ ===================
+//================ НАСТРОЙКА ЧАСТОТЫ ДЕЛЕНИЯ ===================
 .GLOBAL _Set_Kofficient;	
 .SECTION program
 .ALIGN 4;
@@ -130,16 +148,14 @@ _Set_Kofficient.end:
 .SECTION program
 .ALIGN 4;
 _Change_PLL_Frequency:
-	   
     P0.L = LO(REG_CGU0_STAT);
     P0.H = HI(REG_CGU0_STAT);
     R0 = [P0];
 
-    R1.L = LO(BITM_CGU_STAT_PLOCKERR);
-    R1.H = HI(BITM_CGU_STAT_PLOCKERR);
+    //Отключение режима байпаса PLL:
     BITCLR(R0, BITP_CGU_STAT_PLOCKERR); 
-
     [P0] = R0;  
+
 
     P0.L = LO(REG_CGU0_CTL);
     P0.H = HI(REG_CGU0_CTL);
@@ -171,7 +187,7 @@ _Change_PLL_Frequency:
     BITCLR(R0, BITP_CGU_STAT_PLLBP); 
 
     [P0] = R0;  
-
+//Ожидание, пока PLL заблокируется:
 _PLL_Wait_Lock:
     P0.L = LO(REG_CGU0_STAT);
     P0.H = HI(REG_CGU0_STAT);
@@ -179,7 +195,7 @@ _PLL_Wait_Lock:
 
     CC = BITTST(R0, BITP_CGU_STAT_PLOCK);
     IF !CC JUMP _PLL_Wait_Lock;  
-
+ //Ожидание выравнивания PLL:
 _PLL_Wait_Align:
     P0.L = LO(REG_CGU0_STAT);
     P0.H = HI(REG_CGU0_STAT);

@@ -7,6 +7,7 @@
 .EXTERN _Timer0_Init;
 .EXTERN _Timer_Run;
 .EXTERN _Timer0_Overflow;
+.EXTERN _SystClock;
 //.EXTERN _SEC_Init;
 
 .SECTION L1_data;
@@ -18,6 +19,8 @@
 .GLOBAL _main;
 _main:
 _main.Init:	
+	CALL _SystClock;
+
 	CALL _GPIO_Control;
 	
 //	CALL _SEC_Init;
@@ -25,6 +28,9 @@ _main.Init:
 	CALL _Timer0_Init;
 	
 	CALL _Timer_Run;
+	
+	
+
 _main.Loop:
 
 	//CALL _GPIO_Meandr;

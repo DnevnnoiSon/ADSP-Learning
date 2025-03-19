@@ -59,7 +59,7 @@ _GPIO_Meandr.LoopBegin:
 _GPIO_Meandr.LoopEnd:
 	nop; 
 _GPIO_Meandr.Reverse: 
-	R0 = [P0];	//Выгрузка
+	R0 = [P0];			//Выгрузка
 	BITTGL(R0, 14); 	//Инверсия
 
 	[P0] = R0;
