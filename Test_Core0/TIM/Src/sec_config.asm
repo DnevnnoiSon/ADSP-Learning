@@ -24,7 +24,7 @@ _SEC_Init:
           | ENUM_SEC_SCTL_SRC_EN
           | ENUM_SEC_SCTL_INT_EN;      
                  
-    [P0+LO(REG_SEC0_SCTL12)] = R0;            // Cопоставление источника с соответствующим SCI                
+    [P0+LO(REG_SEC0_SCTL12)] = R0;     // Cопоставление источника с соответствующим SCI                
 
 	RTS;	
 _SEC_Init.end:
