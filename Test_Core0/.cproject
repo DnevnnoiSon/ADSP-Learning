@@ -94,10 +94,34 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="blackfin.toolchain.configuration.debug.520050277.634000217" name="/" resourcePath="src/drivers">
+						<toolChain id="blackfin.toolchain.768797195" name="CrossCore Blackfin Toolchain" superClass="blackfin.toolchain" unusedChildren="">
+							<tool id="blackfin.toolchain.assembler.836423877" name="CrossCore Blackfin Assembler" superClass="blackfin.toolchain.assembler.639360892">
+								<option id="assembler.option.additionaldirectories.1246410438" superClass="assembler.option.additionaldirectories" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/drivers}&quot;"/>
+								</option>
+								<inputType id="assembler.input.514813609" name="Assembler Source" superClass="assembler.input"/>
+							</tool>
+							<tool id="blackfin.toolchain.compiler.155203029" name="CrossCore Blackfin C/C++ Compiler" superClass="blackfin.toolchain.compiler.2106295884">
+								<option id="compiler.option.additionaldirectories.406298510" superClass="compiler.option.additionaldirectories" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/GPIO}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/drivers}&quot;"/>
+								</option>
+								<inputType id="compiler.inputType.88017317" name="C/C++ Source" superClass="compiler.inputType"/>
+							</tool>
+							<tool id="blackfin.toolchain.linker.28165265" name="CrossCore Blackfin Linker" superClass="blackfin.toolchain.linker.2050772101"/>
+							<tool id="blackfin.toolchain.archiver.318979055" name="CrossCore Blackfin Archiver" superClass="blackfin.toolchain.archiver.237561089"/>
+							<tool id="blackfin.toolchain.loader.1165546481" name="CrossCore Blackfin Loader" superClass="blackfin.toolchain.loader.1360362668"/>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
-						<entry excluding="GPIO|TIM|src/GPIO|src/TIM|system" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="GPIO"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="TIM"/>
+						<entry excluding="src/drivers|GPIO|TIM|src/GPIO|src/TIM|system" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src/drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="system"/>
 					</sourceEntries>
 				</configuration>
@@ -186,6 +210,31 @@
 								<option id="loader.option.sirevision.2019835236" name="-si-revision" superClass="loader.option.sirevision" value=" 0.2" valueType="string"/>
 								<option id="blackfin.loader.option.enumerated.bootmode.163484519" name="Boot mode (-b)" superClass="blackfin.loader.option.enumerated.bootmode" value="blackfin.loader.option.boot.enumerated.spimaster" valueType="enumerated"/>
 							</tool>
+						</toolChain>
+					</folderInfo>
+					<folderInfo id="blackfin.toolchain.configuration.release.1391181073.1192210377" name="/" resourcePath="src/drivers">
+						<toolChain id="blackfin.toolchain.223999770" name="CrossCore Blackfin Toolchain" superClass="blackfin.toolchain" unusedChildren="">
+							<tool id="blackfin.toolchain.assembler.45945293" name="CrossCore Blackfin Assembler" superClass="blackfin.toolchain.assembler.732388531">
+								<option id="assembler.option.additionaldirectories.176555959" superClass="assembler.option.additionaldirectories" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/GPIO}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/drivers}&quot;"/>
+								</option>
+								<inputType id="assembler.input.1314655270" name="Assembler Source" superClass="assembler.input"/>
+							</tool>
+							<tool id="blackfin.toolchain.compiler.845208913" name="CrossCore Blackfin C/C++ Compiler" superClass="blackfin.toolchain.compiler.328714901">
+								<option id="compiler.option.additionaldirectories.1809759093" superClass="compiler.option.additionaldirectories" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/GPIO}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/drivers}&quot;"/>
+								</option>
+								<inputType id="compiler.inputType.1225149983" name="C/C++ Source" superClass="compiler.inputType"/>
+							</tool>
+							<tool id="blackfin.toolchain.linker.757684012" name="CrossCore Blackfin Linker" superClass="blackfin.toolchain.linker.1692739671"/>
+							<tool id="blackfin.toolchain.archiver.1335331704" name="CrossCore Blackfin Archiver" superClass="blackfin.toolchain.archiver.1272970101"/>
+							<tool id="blackfin.toolchain.loader.1601172935" name="CrossCore Blackfin Loader" superClass="blackfin.toolchain.loader.345003035"/>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>

@@ -8,7 +8,6 @@
 .EXTERN _Timer_Run;
 .EXTERN _Timer0_Overflow;
 .EXTERN _SystClock;
-.EXTERN _Debbug_foo;
 
 .SECTION L1_data;
 .ALIGN 4;
@@ -23,18 +22,11 @@ _main.Init:
 
 	CALL _GPIO_Control;
 	
-//	CALL _SEC_Init;
-	
 	CALL _Timer0_Init;
 	
 	CALL _Timer_Run;
 	
-	
-
 _main.Loop:
-
-	//CALL _GPIO_Meandr;
-	CALL _Debbug_foo;
 	//не блокирующий режим:
 	CALL _Timer0_Overflow;
 	

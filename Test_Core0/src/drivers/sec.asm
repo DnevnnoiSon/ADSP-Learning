@@ -1,6 +1,6 @@
 #include "defBF607.h"
-#include "tim.h"
-#include "sec_config.h"
+#include "timer.h"
+#include "sec.h"
 
 .EXTERN _Timer0_ISR;
 
@@ -9,22 +9,23 @@
 
 .SECTION program
 .ALIGN 4;
-.GLOBAL _SEC_Init;	// Привязка: [EVENT <==> _sec_dispetcher]
+.GLOBAL _SEC_Init;	
+/* Привязка: [EVENT <==> _sec_dispetcher] */
 _SEC_Init:
 	ldAddr(P0,REG_SEC0_GCTL);      
 	                        
-     R0 = ENUM_SEC_GCTL_EN;	 //включение SEC
+     R0 = ENUM_SEC_GCTL_EN;	  //включение SEC
     [P0+LO(REG_SEC0_GCTL)] = R0;   
      
     R0 = ENUM_SEC_CCTL_EN;    //Разрешение прерываний по ядру
     [P0 + LO(REG_SEC0_CCTL0)] = R0;     
                             
-   //Подключение источника в качестве прерывания
+// Подключение источника в качестве прерывания:
 	R0 =(0<<BITP_SEC_SCTL_CTG)                      
           | ENUM_SEC_SCTL_SRC_EN
           | ENUM_SEC_SCTL_INT_EN;      
-                 
-    [P0+LO(REG_SEC0_SCTL12)] = R0;     // Cопоставление источника с соответствующим SCI                
+// Cопоставление источника с соответствующим SCI:                
+    [P0+LO(REG_SEC0_SCTL12)] = R0;              
 
 	RTS;	
 _SEC_Init.end:

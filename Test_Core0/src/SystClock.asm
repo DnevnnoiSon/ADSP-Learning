@@ -8,8 +8,7 @@
 // R1 - Значение маски
 #define  REG_SET_MASKAND(Reg1, Reg2) 	Reg2 = Reg2 & Reg1  //AND MASK								
 #define  REG_SET_MASKOR(Reg1, Reg2)		Reg2 = Reg1 | Reg2  //OR MASK
-						
-												
+																	
 .GLOBAL _SystClock;	
 .SECTION program
 .ALIGN 4;
@@ -35,7 +34,6 @@ _SystClock.error:
 //Обработка ошибок
 	RTS; 
 _SystClock.end:
-
 
 //================= ПРОВЕРКА ТЕКУЩЕГО СОСТОЯНИЯ ===================
 //СОГЛАШЕНИЕ: R0 - ЭЛЕМЕНТ ОТВЕЧАЮЩИЙ ЗА НАЛОЖЕНИЕ МАСКИ
@@ -96,51 +94,51 @@ _Change_PLL_Frequency:
     P0.H =  HI(REG_CGU0_CTL);
 //============= Включение режима bypass =======================
     R0 = [P0];  
-    BITSET(R0, BITP_CGU_STAT_PLLBP);  //bypass ON 
+    
     BITCLR(R0, BITP_CGU_STAT_PLLEN);  //обновление
+    BITSET(R0, BITP_CGU_STAT_PLLBP);  //bypass ON 
+    
     [P0] = R0; 
 //=== Установка коэффициентов деления/множителей =====
+	P0.L =  LO(REG_CGU0_CTL);	
+    P0.H =  HI(REG_CGU0_CTL);
+    R0 = [P0];
+	// Очистка полей MSEL, DF
+	R2 = ~((BITM_CGU_CTL_MSEL) | (BITM_CGU_CTL_DF)); 
+	R0 = R0 & R2;
+	//Сгенерить: 
+	R1 = ((40 << BITP_CGU_CTL_MSEL) | ( 1 << BITP_CGU_CTL_DF));    
+	R0 = R0 | R1; 
+	
+	BITCLR(R0, BITP_CGU_CTL_LOCK);  //бит LOCK -> CGU_CTL
+	[P0] = R0;
+//Частота PLL[ЯДРА] = 480 МГц
+	
 	P0.L = LO(REG_CGU0_DIV);
     P0.H = HI(REG_CGU0_DIV);
 	R0 = [P0];
-	
-	// Очистка полей MSEL, DF и CSEL
-	R2 = ~((BITM_CGU_CTL_MSEL) | (BITM_CGU_CTL_DF) | (BITM_CGU_DIV_CSEL));
+	// Очистка полей SCEL, S0SEL
+	R2 = ~((BITM_CGU_DIV_CSEL) | (BITM_CGU_DIV_S0SEL) | (BITM_CGU_DIV_SYSSEL));
 	R0 = R0 & R2;
-	//Сгенерить:
-	R1 = ((40 << BITP_CGU_CTL_MSEL)
-	    | ( 1 << BITP_CGU_CTL_DF)
-	    | ( 1 << BITP_CGU_DIV_CSEL));
-	R0 = R0 | R1; 
-	[P0] = R0; 
+	//Сгенерить: 
+	R1 = (( 1 << BITP_CGU_DIV_CSEL) | ( 4 << BITP_CGU_DIV_S0SEL) | (1 << BITP_CGU_DIV_SYSSEL));    
+	R0 = R0 | R1;
+	
+	BITSET(R0, BITP_CGU_DIV_UPDT);	//бит UPDT -> CGU_DIV
+	[P0] = R0;
+//Частота на выходе SOCLK: 120МГц
 //============= Включение PLL =======================	
 	P0.L =  LO(REG_CGU0_CTL);	
     P0.H =  HI(REG_CGU0_CTL);
-    
     R0 = [P0];
     //============= Отключение режима bypass =======================   
     BITCLR(R0, BITP_CGU_STAT_PLLBP);  //bypass OFF (PLLBP = 0)
     BITSET(R0, BITP_CGU_STAT_PLLEN);  //обновление
-    [P0] = R0;
-
+    
+    [P0] = R0; 
+	
 	RTS;
 _Change_PLL_Frequency.end:
-
-
-.GLOBAL _Debbug_foo
-.SECTION program
-.ALIGN 4;
-_Debbug_foo:
-	P0.L = LO(REG_CGU0_CTL);
-	P0.H = HI(REG_CGU0_CTL);
-	R1 = [P0];
-	
-	P0.L = LO(REG_CGU0_STAT);
-	P0.H = HI(REG_CGU0_STAT);
-	R1 = [P0];
-	
-	RTS;
-_Debbug_foo.end:
 
 
 

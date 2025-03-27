@@ -1,5 +1,5 @@
 #include "defBF607.h"
-#include "tim.h"
+#include "timer.h"
 
 #define ld32(R,value) 				R##.L = LO(value); R##.H = HI(value)						
 #define ldAddr(P, value)			P##.L = 0; P##.H = HI(value)
@@ -24,8 +24,11 @@ _Timer0_Init:
 
     r0 = 0(z);
     [p0+lo(REG_TIMER0_TMR0_DLY)] = r0;                  //Задержка перед импульсом = 0 мс
+    
+    ld32(r0, 1200000 );							//Период ( Значение до которого будет считать CNT)
+    [p0+lo(REG_TIMER0_TMR0_PER)] = r0;   				
     	
-    ld32(r0, (5000000-1) );
+    ld32(r0, 600000 );							//Длитльность импульса 1 секунда
     [p0+lo(REG_TIMER0_TMR0_WID)] = r0;                 
     
     r0 = BITM_TIMER_DATA_ILAT_TMR00;
@@ -74,10 +77,18 @@ _Timer0_Overflow:
 	IF CC JUMP _Timer0_Overflow.exit;
 
 /* TIM был переполнен: */
-	W[P0] = R1;
+	//W[P0] = R1;
+	R0 = BITM_TIMER_DATA_ILAT_TMR00;
+	W[P0] = R0;  
+	
 	CALL _GPIO_Inverse;
 
 _Timer0_Overflow.exit:
+	//Очистка флага:
+	//R0 = BITM_TIMER_DATA_ILAT_TMR00;
+	//W[P0+LO(REG_TIMER0_DATA_ILAT)] = R0;  
+	//SSYNC;
+	
 	RETS = [SP++];
 	RTS;
 _Timer0_Overflow.end:
