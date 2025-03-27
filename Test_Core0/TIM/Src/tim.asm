@@ -25,8 +25,8 @@ _Timer0_Init:
     r0 = 0(z);
     [p0+lo(REG_TIMER0_TMR0_DLY)] = r0;                  //Задержка перед импульсом = 0 мс
     	
-    ld32(r0, (12300000-1) );
-    [p0+lo(REG_TIMER0_TMR0_WID)] = r0;                  //Длительность импульса =  10мс
+    ld32(r0, (5000000-1) );
+    [p0+lo(REG_TIMER0_TMR0_WID)] = r0;                 
     
     r0 = BITM_TIMER_DATA_ILAT_TMR00;
     w[p0+lo(REG_TIMER0_DATA_ILAT)] = r0;                //Очищаем текущий статус прерывания
@@ -73,7 +73,7 @@ _Timer0_Overflow:
     CC = R0 == R1;  
 	IF CC JUMP _Timer0_Overflow.exit;
 
-/* TIM was overflowed: */
+/* TIM был переполнен: */
 	W[P0] = R1;
 	CALL _GPIO_Inverse;
 

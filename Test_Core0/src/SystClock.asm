@@ -15,6 +15,7 @@
 .ALIGN 4;
 _SystClock:
 _SystClock.init:
+	[--SP] = RETS;
 	//Проверка текущего состояния CGU_STAT:
 	 R0 = 1;
 	 CALL _Check_temp_SystClock;
@@ -25,6 +26,8 @@ _SystClock.init:
     //Проверка завершения процесса:
      R0 = 0;
      CALL _Check_temp_SystClock;
+     
+     RETS = [SP++];
 	 RTS;
 _SystClock.error:
 //Опрос кодов ошибок
@@ -91,17 +94,22 @@ _Change_PLL_Frequency:
 //============= Отключение PLL =======================
 	P0.L =  LO(REG_CGU0_CTL);	
     P0.H =  HI(REG_CGU0_CTL);
-   
-    R0 = [P0];
-    BITCLR(R0, BITP_CGU_STAT_PLLEN);	
+//============= Включение режима bypass =======================
+    R0 = [P0];  
+    BITSET(R0, BITP_CGU_STAT_PLLBP);  //bypass ON 
+    BITCLR(R0, BITP_CGU_STAT_PLLEN);  //обновление
     [P0] = R0; 
 //=== Установка коэффициентов деления/множителей =====
 	P0.L = LO(REG_CGU0_DIV);
     P0.H = HI(REG_CGU0_DIV);
 	R0 = [P0];
+	
+	// Очистка полей MSEL, DF и CSEL
+	R2 = ~((BITM_CGU_CTL_MSEL) | (BITM_CGU_CTL_DF) | (BITM_CGU_DIV_CSEL));
+	R0 = R0 & R2;
 	//Сгенерить:
 	R1 = ((40 << BITP_CGU_CTL_MSEL)
-	    | ( 2 << BITP_CGU_CTL_DF)
+	    | ( 1 << BITP_CGU_CTL_DF)
 	    | ( 1 << BITP_CGU_DIV_CSEL));
 	R0 = R0 | R1; 
 	[P0] = R0; 
@@ -110,11 +118,33 @@ _Change_PLL_Frequency:
     P0.H =  HI(REG_CGU0_CTL);
     
     R0 = [P0];
-    BITSET(R0, BITP_CGU_STAT_PLLEN);	
+    //============= Отключение режима bypass =======================   
+    BITCLR(R0, BITP_CGU_STAT_PLLBP);  //bypass OFF (PLLBP = 0)
+    BITSET(R0, BITP_CGU_STAT_PLLEN);  //обновление
     [P0] = R0;
 
 	RTS;
 _Change_PLL_Frequency.end:
+
+
+.GLOBAL _Debbug_foo
+.SECTION program
+.ALIGN 4;
+_Debbug_foo:
+	P0.L = LO(REG_CGU0_CTL);
+	P0.H = HI(REG_CGU0_CTL);
+	R1 = [P0];
+	
+	P0.L = LO(REG_CGU0_STAT);
+	P0.H = HI(REG_CGU0_STAT);
+	R1 = [P0];
+	
+	RTS;
+_Debbug_foo.end:
+
+
+
+
 
 
 
