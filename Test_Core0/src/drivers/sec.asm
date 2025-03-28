@@ -25,33 +25,40 @@ _SEC_Init:
           | ENUM_SEC_SCTL_SRC_EN
           | ENUM_SEC_SCTL_INT_EN;      
 // Cопоставление источника с соответствующим SCI:                
-    [P0+LO(REG_SEC0_SCTL12)] = R0;              
-
+    [P0+LO(REG_SEC0_SCTL12)] = R0; 
+                 
+_SEC_Init.exit:
 	RTS;	
 _SEC_Init.end:
 
-//======================================================================
-.SECTION program
-.ALIGN 4;
-.GLOBAL _SEC_Dispetcher;
-_SEC_Dispetcher:
+//===== ОБРАБОТЧИК(ДИСПЕТЧЕР) НИЖНЕГО УРОВНЯ ===================
+.GLOBAL __sec_int_dispatcher;
+__sec_int_dispatcher:
+//Сохранение контекста:
+	[--sp] = (R7:0, P5:0);
+	[--sp] = ASTAT;
+    [--sp] = RETS;
+   
 	ldAddr(P5, REG_SEC0_CSID0);
 	R5 = [P0 + LO(REG_SEC0_CSID0)];
-																		
-	//Теперь нужно сравнить:
-	//Прерываине от TIM0?
+	
+__sec_int_dispatcher.timer:																		
+	//Прерывание от TIM0?
 	R0 = INTR_TIMER0_TMR0;
 	CC = R5 == R0;
-	IF !CC JUMP _SEC_Dispetcher.exit; 
-	
+	IF !CC JUMP __sec_int_dispatcher.exit; 
+	//Обработчик (TIM0) верхнего уровня:
 	CALL _Timer0_ISR;
 	
-_SEC_Dispetcher.exit:
-	//Нужно выполнить очистку флага
-	ldAddr(P5, REG_SEC0_END);  
-	[P5 + LO(REG_SEC0_END)] = R5;
+__sec_int_dispatcher.exit:
+	//Очистка флага:
+	R0 = BITM_TIMER_DATA_ILAT_TMR00;
+	W[P0] = R0;  
 	
+	RETS = [sp++];
+	ASTAT = [sp++];
+	(R7:0, P5:0) = [sp++];	
 	RTI;
-_SEC_Dispetcher.end:
+__sec_int_dispatcher.end:
 
 

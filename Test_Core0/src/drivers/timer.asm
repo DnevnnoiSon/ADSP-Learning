@@ -44,12 +44,11 @@ _Timer0_Init:
     RTS;
 _Timer0_Init.end:
 
-//========================================================================================
+//ЗАПУСК ТАЙМЕРА
 .SECTION program
 .ALIGN 4;
 .GLOBAL _Timer_Run;
 _Timer_Run:
-	
 	P0.L = 0;
 	P0.H = HI(REG_TIMER0_RUN);   
 
@@ -58,7 +57,8 @@ _Timer_Run:
 	RTS;
 _Timer_Run.end:
 
-//==========================================================================
+//========= ОПРОС ФЛАГА ПЕРЕПОЛНЕНИЯ ТАЙМЕРА ======================
+//РЕАЛИЗАЦИЯ БЕЗ ПРИВЯЗКИ К ВЕКТОРУ ПРЕРЫВАНИЙ
 .GLOBAL _Timer0_Overflow;
 .SECTION program
 .ALIGN 4;
@@ -77,31 +77,28 @@ _Timer0_Overflow:
 	IF CC JUMP _Timer0_Overflow.exit;
 
 /* TIM был переполнен: */
-	//W[P0] = R1;
+	//Очистка флага:
 	R0 = BITM_TIMER_DATA_ILAT_TMR00;
 	W[P0] = R0;  
 	
 	CALL _GPIO_Inverse;
 
 _Timer0_Overflow.exit:
-	//Очистка флага:
-	//R0 = BITM_TIMER_DATA_ILAT_TMR00;
-	//W[P0+LO(REG_TIMER0_DATA_ILAT)] = R0;  
-	//SSYNC;
-	
 	RETS = [SP++];
 	RTS;
 _Timer0_Overflow.end:
 
-//========================================================================================
+//==== ОБРАБОТЧИК ВЕРХНЕГО УРОВНЯ ===============================
 .SECTION program
 .ALIGN 4;
 .GLOBAL _Timer0_ISR;
 _Timer0_ISR:
-_Timer0_ISR.init:
-
-_Timer0_ISR.Handling:
+	[--sp] = RETS;
+//Действия:
 	CALL _GPIO_Inverse;
+//Флаг очищается в диспетчере
+	RETS = [sp++];
+	RTS;
 _Timer0_ISR.end:
 
 
