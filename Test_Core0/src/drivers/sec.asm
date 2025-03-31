@@ -38,22 +38,24 @@ __sec_int_dispatcher:
 	[--sp] = (R7:0, P5:0);
 	[--sp] = ASTAT;
     [--sp] = RETS;
-   
+//ID текущего прерывания:
 	ldAddr(P5, REG_SEC0_CSID0);
-	R5 = [P0 + LO(REG_SEC0_CSID0)];
+	R7 = [P5 + LO(REG_SEC0_CSID0)];	
+	[p5+lo(REG_SEC0_CSID0)] = r7; 
 	
 __sec_int_dispatcher.timer:																		
 	//Прерывание от TIM0?
 	R0 = INTR_TIMER0_TMR0;
-	CC = R5 == R0;
+	CC = R7 == R0;
 	IF !CC JUMP __sec_int_dispatcher.exit; 
 	//Обработчик (TIM0) верхнего уровня:
 	CALL _Timer0_ISR;
 	
+	JUMP __sec_int_dispatcher.exit;
+//.....	
 __sec_int_dispatcher.exit:
-	//Очистка флага:
-	R0 = BITM_TIMER_DATA_ILAT_TMR00;
-	W[P0] = R0;  
+    //Подтверждение обработки прерывания:       	
+	W[P5 + LO(REG_SEC0_END)] = R7;
 	
 	RETS = [sp++];
 	ASTAT = [sp++];

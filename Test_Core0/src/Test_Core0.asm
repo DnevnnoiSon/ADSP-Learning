@@ -30,7 +30,9 @@ _main.Init:
 	
 _main.Loop:
 	//не блокирующий режим:
-	CALL _Timer0_Overflow;
+    //CALL _Timer0_Overflow;
+	NOP;
+	
 	
 	JUMP _main.Loop;
 _main.end: 

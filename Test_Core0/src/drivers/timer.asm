@@ -63,7 +63,7 @@ _Timer_Run.end:
 .SECTION program
 .ALIGN 4;
 _Timer0_Overflow:
-	[--SP] = RETS;
+	[--sp] = RETS;
 
 	P0.L = LO(REG_TIMER0_DATA_ILAT);
 	P0.H = HI(REG_TIMER0_DATA_ILAT);  
@@ -84,7 +84,7 @@ _Timer0_Overflow:
 	CALL _GPIO_Inverse;
 
 _Timer0_Overflow.exit:
-	RETS = [SP++];
+	RETS = [sp++];
 	RTS;
 _Timer0_Overflow.end:
 
@@ -95,6 +95,13 @@ _Timer0_Overflow.end:
 _Timer0_ISR:
 	[--sp] = RETS;
 //Действия:
+	/* TIM был переполнен: сброс переполнения */
+	P0.L = LO(REG_TIMER0_DATA_ILAT);
+	P0.H = HI(REG_TIMER0_DATA_ILAT);
+	
+	R0 = BITM_TIMER_DATA_ILAT_TMR00;
+	W[P0] = R0;  
+
 	CALL _GPIO_Inverse;
 //Флаг очищается в диспетчере
 	RETS = [sp++];
