@@ -26,12 +26,11 @@ _main.Init:
 	
 	CALL _GPIO_Control;
 	
-	CALL _Timer_Run;
+	//CALL _Timer_Run;
 	
 _main.Loop:
 	//не блокирующий режим:
     //CALL _Timer0_Overflow;
-	NOP;
 	
 	
 	JUMP _main.Loop;

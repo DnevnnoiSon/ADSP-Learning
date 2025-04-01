@@ -2,9 +2,7 @@
 
 .SECTION L1_data;
 .ALIGN 4;
-.STRUCT CustomData _data = {
-	 1, 0 
-	};
+.STRUCT CustomData _data = { 1, 0 };
 
 
 .GLOBAL _GPIO_DataInit;
