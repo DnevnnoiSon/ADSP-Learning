@@ -1,18 +1,15 @@
 .EXTERN _adi_initpinmux;
 .EXTERN _adi_core_enable;
 
-//ѕќЋ№«ќ¬ј“≈Ћ№— »≈ ‘”Ќ ÷»»:
 .EXTERN _GPIO_Control;
+.EXTERN _GPIO_Triger_Overflow;
 .EXTERN _Timer0_Init;
 .EXTERN _Timer_Run;
 .EXTERN _Timer0_Overflow;
 .EXTERN _SystClock;
 .EXTERN _SEC_Init;
 
-.SECTION L1_data;
-.ALIGN 4;
 
- 
 .SECTION L1_code;
 .ALIGN 4;
 .GLOBAL _main;
@@ -30,9 +27,11 @@ _main.Init:
 	
 _main.Loop:
 	//не блокирующий режим:
+//меандр по опросу флага триггера вх. сигнала:  
     //CALL _Timer0_Overflow;
-	
+//меандр по опросу флага переполнени€ сигнала: 
+	//CALL _GPIO_Triger_Overflow;
 	
 	JUMP _main.Loop;
 _main.end: 
-
+/* ¬ sec.asm - реализован меандр по прерыванию от таймера */

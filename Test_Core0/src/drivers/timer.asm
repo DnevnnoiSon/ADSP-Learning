@@ -4,8 +4,7 @@
 #define ld32(R,value) 				R##.L = LO(value); R##.H = HI(value)						
 #define ldAddr(P, value)			P##.L = 0; P##.H = HI(value)
 	
-	
-.EXTERN _GPIO_Inverse;	
+.EXTERN _GPIO_Inverse;		
 		
 .SECTION program
 .ALIGN 4;

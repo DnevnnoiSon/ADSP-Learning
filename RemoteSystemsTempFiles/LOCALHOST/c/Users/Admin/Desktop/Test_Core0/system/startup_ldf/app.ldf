@@ -359,7 +359,6 @@ PROCESSOR CORE_0
          INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(program) )
          INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(program) )
          INPUT_SECTIONS( $OBJS_LIBS(program) )
-         INPUT_SECTIONS( $OBJS_LIBS(program_for_artem) )
          
          
          /*$VDSG<insert-input-sections-at-the-end-of-l1_code>   */
