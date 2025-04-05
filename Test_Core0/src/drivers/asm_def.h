@@ -1,10 +1,3 @@
-/*
- * asm_def.h
- *
- *  Created on: Jul 4, 2019
- *      Author: Konstantin Petrov
- */
-
 #ifndef ASM_DEF_H_
 #define ASM_DEF_H_
 

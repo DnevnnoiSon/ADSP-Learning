@@ -49,26 +49,6 @@ _GPIO_Control:
 	R1 = BITM_PORT_POL_PX2;
 	R0 = R0 & R1;
 	[P0] = R0;	
-//========================= BNC2 INTERUPTION =============================  
-	        /* BNC2 Включение прерывания для пина */
-    P0.L = LO(REG_PORTC_INEN);
-    P0.H = HI(REG_PORTC_INEN);
-    R0 = W[P0];
-    R1 = (1 << BITP_PORT_POL_PX2);
-    R0 = R0 | R1; 
-    W[P0] = R0;   
-          /* Настройка триггера на высокий уровень */   
-    P0.L = LO(REG_PORTC_POL);
-    P0.H = HI(REG_PORTC_POL);
-    R0 = W[P0];
-    R1 = (1 << BITP_PORT_POL_PX2);
-    R0 = R0 | R1; 
-    W[P0] = R0;      
-                       /* Очистка флага прерывания */
-//   P0.L = LO(REG_PORTC_INEN_CLR);
-//    P0.H = HI(REG_PORTC_INEN_CLR);
-//    R0 = (1 << BITP_PORT_POL_PX2);
-//    W[P0] = R0;  
 //========================================================================
 //==== Настройка физического сигнала ================
 	P0.L = LO(REG_PORTE_DATA);      /* BNC1 - HIGH */
