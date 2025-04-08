@@ -97,9 +97,11 @@ _Timer0_ISR:
 	/* TIM был переполнен: сброс переполнения */
 	P0.L = LO(REG_TIMER0_DATA_ILAT);
 	P0.H = HI(REG_TIMER0_DATA_ILAT);
+	R0 = [P0];
 	
-	R0 = BITM_TIMER_DATA_ILAT_TMR00;
-	W[P0] = R0;  
+	R1 = BITM_TIMER_DATA_ILAT_TMR00;
+	R0 = R0 | R1;
+	[P0] = R0;  
 
 	CALL _GPIO_Inverse;
 //Флаг очищается в диспетчере

@@ -3,6 +3,7 @@
 #include "sec.h"
 
 .EXTERN _Timer0_ISR;
+.EXTERN _GPIO_Trigger_ISR;
 
 #define ld32(R,value) 				R##.L = LO(value); R##.H = HI(value)						
 #define ldAddr(P, value)			P##.L = 0; P##.H = HI(value)
@@ -42,18 +43,28 @@ __sec_int_dispatcher:
 //ID текущего прерывания:
 	ldAddr(P5, REG_SEC0_CSID0);
 	R7 = [P5 + LO(REG_SEC0_CSID0)];	
-	[p5+lo(REG_SEC0_CSID0)] = r7; 
+	[p5+lo(REG_SEC0_CSID0)] = R7; 
 	
 __sec_int_dispatcher.timer:																		
 	//Прерывание от TIM0?
 	R0 = INTR_TIMER0_TMR0;
 	CC = R7 == R0;
-	IF !CC JUMP __sec_int_dispatcher.exit; 
+	IF !CC JUMP __sec_int_dispatcher.gpio; 
 	//Обработчик (TIM0) верхнего уровня:
 	CALL _Timer0_ISR;
+
+	JUMP __sec_int_dispatcher.exit;
+__sec_int_dispatcher.gpio:
+	R0 = INTR_PINT2_BLOCK;
+	CC = R7 == R0;
+	IF !CC JUMP __sec_int_dispatcher.exit; 
+	//Обработчик (GPIO) верхнего уровня:
+	CALL _GPIO_Trigger_ISR;
 	
 	JUMP __sec_int_dispatcher.exit;
-//.....	
+//====== Добаление новых обработчиков ======	
+
+//==========================================
 __sec_int_dispatcher.exit:
     //Подтверждение обработки прерывания:       	
 	W[P5 + LO(REG_SEC0_END)] = R7;
