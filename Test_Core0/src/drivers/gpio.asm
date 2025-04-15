@@ -35,6 +35,12 @@ _GPIO_Control:
 	R0 = R1 & R0; 
 	[P0] = R0;
 	    
+	P0.L = LO(REG_PORTD_FER);       /* PORTD - PIN7 */
+	P0.H = HI(REG_PORTD_FER);
+	R0 = [P0];
+	R1 = BITM_PORT_FER_PX7;
+	R0 = R1 & R0; 
+	[P0] = R0;
 //==== Настройка на вход/выход ======================
 	P0.L = LO(REG_PORTE_DIR);     /* BNC1 - OUTPUT */
 	P0.H = HI(REG_PORTE_DIR);
@@ -47,6 +53,13 @@ _GPIO_Control:
 	P0.H = HI(REG_PORTC_DIR);
 	R0 = [P0];	
 	R1 = BITM_PORT_POL_PX2;
+	R0 = R0 & R1;
+	[P0] = R0;	
+	
+	P0.L = LO(REG_PORTD_DIR);      /* PORTD - PIN7 */
+	P0.H = HI(REG_PORTD_DIR);
+	R0 = [P0];	
+	R1 = BITM_PORT_POL_PX7;
 	R0 = R0 & R1;
 	[P0] = R0;	
 //========================================================================
@@ -64,6 +77,13 @@ _GPIO_Control:
 	R1 = ~BITM_PORT_DATA_TGL_PX2;
 	R0 = R0 & R1;
 	[P0] = R0;
+		
+	P0.L = LO(REG_PORTD_DATA);       /* PORTD - PIN7 */
+	P0.H = HI(REG_PORTD_DATA);
+	R0 = [P0];	
+	R1 = ~BITM_PORT_DATA_TGL_PX7;
+	R0 = R0 & R1;
+	[P0] = R0;	
 								     
 	RTS;
 _GPIO_Control.end:
