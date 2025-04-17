@@ -9,7 +9,7 @@
 .EXTERN _Timer0_Overflow;
 .EXTERN _SystClock;
 .EXTERN _SEC_Init;
-.EXTERN _SPI_Init;
+.EXTERN _SPORT_Init;
 
 .SECTION L1_code;
 .ALIGN 4;
@@ -28,7 +28,7 @@ _main.Init:
 	
 	//CALL _Timer_Run;
 	
-	CALL _SPI_Init;
+	CALL _SPORT_Init;
 	
 _main.Loop:
 	//не блокирующий режим:
