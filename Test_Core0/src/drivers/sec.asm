@@ -26,8 +26,8 @@ _SEC_Init:
           | ENUM_SEC_SCTL_SRC_EN
           | ENUM_SEC_SCTL_INT_EN;      
 // Cопоставление источника с соответствующим SCI:                
-    [P0+LO(REG_SEC0_SCTL12)] = R0; 	//TIM0
-    [P0+LO(REG_SEC0_SCTL23)] = R0;  //GPIOC-PIN2
+    [P0+LO(REG_SEC0_SCTL12)] = R0; 	// TIM0
+    [P0+LO(REG_SEC0_SCTL23)] = R0;  // GPIOC-PIN2
                  
 _SEC_Init.exit:
 	RTS;	

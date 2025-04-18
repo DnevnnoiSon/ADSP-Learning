@@ -10,12 +10,16 @@
 .EXTERN _SystClock;
 .EXTERN _SEC_Init;
 .EXTERN _SPORT_Init;
+.EXTERN _SPORT_Tranmit_Data;
 
 .SECTION L1_code;
 .ALIGN 4;
 .GLOBAL _main;
 _main:
 _main.Init:	
+
+	CALL _adi_initpinmux;
+	
 	CALL _SystClock;
 	
 	CALL _Timer0_Init;
@@ -31,13 +35,12 @@ _main.Init:
 	CALL _SPORT_Init;
 	
 _main.Loop:
-	//не блокирующий режим:
-	
 //меандр по опросу флага триггера вх. сигнала: 
-    //CALL _Timer0_Overflow;
-    
+    //CALL _Timer0_Overflow;  
 //меандр по опросу флага переполнения сигнала: 
 	//CALL _GPIO_Triger_Overflow;
+	
+	CALL _SPORT_Tranmit_Data; 
 	
 	JUMP _main.Loop;
 _main.end: 

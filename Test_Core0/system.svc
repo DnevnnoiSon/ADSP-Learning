@@ -19,7 +19,20 @@ It provides information needed to link your code. It can be used to configure me
 	</installedComponents>
 	<configurations>
 		<configuration id="com.analog.crosscore.ssldd.pinmux.component">
-			<pinmux-configuration processor="ADSP-BF607" version="1.0"/>
+			<pinmux-configuration processor="ADSP-BF607" version="1.0">
+				<peripheral description="SPORT Module" name="SPORT1">
+					<signal bit="8" mux="2" name="BCLK" pin="4" port="E"/>
+					<signal bit="6" mux="2" name="BFS" pin="3" port="E"/>
+					<signal bit="2" mux="2" name="BD0" pin="1" port="E"/>
+					<signal bit="0" mux="2" name="BD1" pin="0" port="E"/>
+				</peripheral>
+				<gpio name="Port E">
+					<signal bit="0" name="PE00" pin="0" port="E"/>
+					<signal bit="2" name="PE01" pin="1" port="E"/>
+					<signal bit="6" name="PE03" pin="3" port="E"/>
+					<signal bit="8" name="PE04" pin="4" port="E"/>
+				</gpio>
+			</pinmux-configuration>
 		</configuration>
 		<configuration id="com.analog.sourcegen.component.startup_ldf">
 			<startup_ldf-configuration>

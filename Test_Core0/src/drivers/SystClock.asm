@@ -90,8 +90,8 @@ _Check_temp_SystClock.end:
 .ALIGN 4;
 _Change_PLL_Frequency:
 //============= Отключение PLL =======================
-	P0.L =  LO(REG_CGU0_CTL);	
-    P0.H =  HI(REG_CGU0_CTL);
+	P0.L = LO(REG_CGU0_CTL);	
+    P0.H = HI(REG_CGU0_CTL);
 //============= Включение режима bypass =======================
     R0 = [P0];  
     
@@ -118,10 +118,19 @@ _Change_PLL_Frequency:
     P0.H = HI(REG_CGU0_DIV);
 	R0 = [P0];
 	// Очистка полей SCEL, S0SEL
-	R2 = ~((BITM_CGU_DIV_CSEL) | (BITM_CGU_DIV_S0SEL) | (BITM_CGU_DIV_SYSSEL));
+	R2.H = HI(~((BITM_CGU_DIV_CSEL) | (BITM_CGU_DIV_S0SEL) | (BITM_CGU_DIV_S1SEL) | (BITM_CGU_DIV_SYSSEL)));
+	R2.L = LO(~((BITM_CGU_DIV_CSEL) | (BITM_CGU_DIV_S0SEL) | (BITM_CGU_DIV_S1SEL) | (BITM_CGU_DIV_SYSSEL)));
 	R0 = R0 & R2;
 	//Сгенерить: 
-	R1 = (( 1 << BITP_CGU_DIV_CSEL) | ( 4 << BITP_CGU_DIV_S0SEL) | (1 << BITP_CGU_DIV_SYSSEL));    
+	R1.L = LO((( 1 << BITP_CGU_DIV_CSEL)|
+	         ( 4 << BITP_CGU_DIV_S0SEL) | 
+	         ( 4 << BITP_CGU_DIV_S1SEL) |
+	         ( 1 << BITP_CGU_DIV_SYSSEL)));   
+	R1.H = HI((( 1 << BITP_CGU_DIV_CSEL)|
+	         ( 4 << BITP_CGU_DIV_S0SEL) | 
+	         ( 4 << BITP_CGU_DIV_S1SEL) |
+	         ( 1 << BITP_CGU_DIV_SYSSEL)));             
+	     
 	R0 = R0 | R1;
 	
 	BITSET(R0, BITP_CGU_DIV_UPDT);	//бит UPDT -> CGU_DIV
