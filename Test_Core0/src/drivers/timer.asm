@@ -12,7 +12,7 @@
 _Timer0_Init:	
 	P0.H = HI(REG_TIMER0_RUN);
 	P0.L = 0;                                                                                        
-	      //было: ENUM_TIMER_TMR_CFG_PWMSING_MODE; 		     
+		     
 	ld32(R0,      ENUM_TIMER_TMR_CFG_CLKSEL_SCLK
                 | ENUM_TIMER_TMR_CFG_EMU_CNT 
                 | ENUM_TIMER_TMR_CFG_PADOUT_DIS

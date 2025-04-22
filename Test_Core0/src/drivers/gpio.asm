@@ -35,7 +35,7 @@ _GPIO_Control:
 	R0 = R1 & R0; 
 	[P0] = R0;
 	    
-	P0.L = LO(REG_PORTD_FER);       /* PORTD - PIN7 */
+	P0.L = LO(REG_PORTD_FER);       /* PORTD PIN7 - GPIO */
 	P0.H = HI(REG_PORTD_FER);
 	R0 = [P0];
 	R1 = ~BITM_PORT_FER_PX7;
@@ -56,7 +56,7 @@ _GPIO_Control:
 	R0 = R0 & R1;
 	[P0] = R0;	
 	
-	P0.L = LO(REG_PORTD_DIR);      /* PORTD - PIN7 */
+	P0.L = LO(REG_PORTD_DIR);      /* PORTD PIN7 - OUTPUT*/
 	P0.H = HI(REG_PORTD_DIR);
 	R0 = [P0];	
 	R1 = ~BITM_PORT_POL_PX7;
@@ -78,7 +78,7 @@ _GPIO_Control:
 	R0 = R0 & R1;
 	[P0] = R0;
 		
-	P0.L = LO(REG_PORTD_DATA);       /* PORTD - PIN7 */
+	P0.L = LO(REG_PORTD_DATA);       /* PORTD PIN7 - LOW */
 	P0.H = HI(REG_PORTD_DATA);
 	R0 = [P0];	
 	R1 = ~BITM_PORT_DATA_TGL_PX7;
