@@ -20,12 +20,32 @@ It provides information needed to link your code. It can be used to configure me
 	<configurations>
 		<configuration id="com.analog.crosscore.ssldd.pinmux.component">
 			<pinmux-configuration processor="ADSP-BF607" version="1.0">
+				<peripheral description="SPORT Module" name="SPORT0">
+					<signal bit="10" mux="2" name="ACLK" pin="5" port="B"/>
+					<signal bit="8" mux="2" name="AFS" pin="4" port="B"/>
+					<signal bit="18" mux="2" name="AD0" pin="9" port="B"/>
+					<signal bit="24" mux="2" name="AD1" pin="12" port="B"/>
+					<signal bit="16" mux="2" name="BCLK" pin="8" port="B"/>
+					<signal bit="14" mux="2" name="BFS" pin="7" port="B"/>
+					<signal bit="22" mux="2" name="BD0" pin="11" port="B"/>
+					<signal bit="20" mux="2" name="BD1" pin="10" port="B"/>
+				</peripheral>
 				<peripheral description="SPORT Module" name="SPORT1">
 					<signal bit="8" mux="2" name="BCLK" pin="4" port="E"/>
 					<signal bit="6" mux="2" name="BFS" pin="3" port="E"/>
 					<signal bit="2" mux="2" name="BD0" pin="1" port="E"/>
 					<signal bit="0" mux="2" name="BD1" pin="0" port="E"/>
 				</peripheral>
+				<gpio name="Port B">
+					<signal bit="8" name="PB04" pin="4" port="B"/>
+					<signal bit="10" name="PB05" pin="5" port="B"/>
+					<signal bit="14" name="PB07" pin="7" port="B"/>
+					<signal bit="16" name="PB08" pin="8" port="B"/>
+					<signal bit="18" name="PB09" pin="9" port="B"/>
+					<signal bit="20" name="PB10" pin="10" port="B"/>
+					<signal bit="22" name="PB11" pin="11" port="B"/>
+					<signal bit="24" name="PB12" pin="12" port="B"/>
+				</gpio>
 				<gpio name="Port E">
 					<signal bit="0" name="PE00" pin="0" port="E"/>
 					<signal bit="2" name="PE01" pin="1" port="E"/>

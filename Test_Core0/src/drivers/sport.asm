@@ -6,29 +6,42 @@
 /*=============================================================*/
 #include "sport.h"
 
-/* Инициализация SPORT1 */
 .SECTION program
 .ALIGN 4;
 .GLOBAL _SPORT_Init;
 _SPORT_Init:
-	[--SP] = RETS;
+ 	[--SP] = RETS;
+/*====== SPORT1B--->DAC1 ======*/
+	CALL _SPORT1B_Init;
+/*====== SPORT0B--->LMX2571 ======*/
+	CALL _SPORT0B_Init;
+	
+_SPORT_Init.exit:
+	RETS = [SP++];
+	RTS;	
+_SPORT_Init.end:
+
+
+/* Инициализация SPORT1 */
+.SECTION program
+.ALIGN 4;
+.GLOBAL _SPORT1B_Init;
+_SPORT1B_Init:	
 //настройка переферийнных пинов:     
-//  CALL _SPORT_GPIO_Init;
+//  CALL _SPORT_GPIO_Init; - на данный момент задаётся в UI
     
     ldAddr(P0, REG_SPORT1_CTL_B);
 // Очистка управляющих регистров sport:
     R0 = 0(z);
     [P0+LO(REG_SPORT1_CTL_B)] = R0;	 //..OPMODE 
-    [P0+LO(REG_SPORT1_MCTL_B)] = R0; //..MCE               
-                                                   
-    [P0+LO(REG_SPORT1_CTL_B)] = R0;
+    [P0+LO(REG_SPORT1_MCTL_B)] = R0; //..MCE                                         
     
     //CLK = SCLK0 / ( 1 + DIV)
     //Частота следования сигнала FS в периодах CLK  
     ld32( R0, (3  << BITP_SPORT_DIV_CLKDIV) | ( 24 << BITP_SPORT_DIV_FSDIV) );              
     [P0+LO(REG_SPORT1_DIV_B)] = R0;  
        
-   ld32(R0,    ENUM_SPORT_CTL_TX|
+   ld32(R0,     ENUM_SPORT_CTL_TX|
                 ENUM_SPORT_CTL_SECONDARY_DIS|
                 ENUM_SPORT_CTL_GCLK_EN|
                 ENUM_SPORT_CTL_TXFIN_EN|
@@ -50,12 +63,53 @@ _SPORT_Init:
                     
 	[P0+LO(REG_SPORT1_CTL_B)] = R0;	
 	
-_SPORT_Init.exit:
-	RETS = [SP++];
+_SPORT1B_Init.exit:
 	RTS;
-_SPORT_Init.end:
+_SPORT1B_Init.end:
 
-/* настройка SPORT ножек */
+/* Инициализация SPORT0 */
+.SECTION program
+.ALIGN 4;
+.GLOBAL _SPORT0B_Init;
+_SPORT0B_Init:
+//настройка переферийнных пинов: [задаётся в UI]
+	ldAddr(P0, REG_SPORT0_CTL_B);
+//Очистка управляющих регистров sport:
+    R0 = 0(z);
+    [P0+LO(REG_SPORT0_CTL_B)] = R0;	 //..OPMODE 
+    [P0+LO(REG_SPORT0_MCTL_B)] = R0; //..MCE     
+//Частота следования сигнала FS в периодах CLK  
+	ld32( R0, (3  << BITP_SPORT_DIV_CLKDIV) | ( 24 << BITP_SPORT_DIV_FSDIV) );  
+	
+	[P0+LO(REG_SPORT1_DIV_B)] = R0;  
+       
+    ld32(R0,    ENUM_SPORT_CTL_TX|
+                ENUM_SPORT_CTL_SECONDARY_DIS|
+                ENUM_SPORT_CTL_GCLK_EN|
+                ENUM_SPORT_CTL_TXFIN_EN|
+                ENUM_SPORT_CTL_LEVEL_FS|
+                ENUM_SPORT_CTL_RJUST_DIS|
+                ENUM_SPORT_CTL_LATE_FS|			
+                ENUM_SPORT_CTL_FS_HI|
+                ENUM_SPORT_CTL_DATA_INDP_FS|
+                ENUM_SPORT_CTL_INTERNAL_FS|	
+                ENUM_SPORT_CTL_FS_REQ|        
+                ENUM_SPORT_CTL_CLK_RISE_EDGE|
+                ENUM_SPORT_CTL_SERIAL_MC_MODE|
+                ENUM_SPORT_CTL_INTERNAL_CLK|	
+                ENUM_SPORT_CTL_PACK_DIS|
+                ((24 - 1 ) << BITP_SPORT_CTL_SLEN)|
+                ENUM_SPORT_CTL_MSB_FIRST|
+                ENUM_SPORT_CTL_RJUSTIFY_ZFILL|
+                ENUM_SPORT_CTL_EN  ); 
+                    
+	[P0+LO(REG_SPORT0_CTL_B)] = R0;	
+_SPORT0B_Init.exit:
+	RTS;	
+_SPORT0B_Init.end:
+
+
+/* настройка SPORT1B ножек */
 .SECTION program
 .ALIGN 4;
 .GLOBAL _SPORT_GPIO_Init;
@@ -108,6 +162,8 @@ _SPORT_Tranmit_Data.check_buf_reserve:
 _SPORT_Tranmit_Data.exit: 
 	RTS;
 _SPORT_Tranmit_Data.end:
+
+
 
 
 
