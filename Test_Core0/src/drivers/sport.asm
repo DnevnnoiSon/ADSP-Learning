@@ -81,7 +81,7 @@ _SPORT0B_Init:
 //Частота следования сигнала FS в периодах CLK  
 	ld32( R0, (3  << BITP_SPORT_DIV_CLKDIV) | ( 24 << BITP_SPORT_DIV_FSDIV) );  
 	
-	[P0+LO(REG_SPORT1_DIV_B)] = R0;  
+	[P0+LO(REG_SPORT0_DIV_B)] = R0;  
        
     ld32(R0,    ENUM_SPORT_CTL_TX|
                 ENUM_SPORT_CTL_SECONDARY_DIS|
@@ -141,27 +141,27 @@ _SPORT_GPIO_Init.end:
 //R0 - ccылка на данные
 .SECTION program
 .ALIGN 4;
-.GLOBAL _SPORT_Tranmit_Data;
-_SPORT_Tranmit_Data:
+.GLOBAL _SPORT1B_Tranmit_Data;
+_SPORT1_Tranmit_Data:
 //half_B на передачу
 //PE3 ---> BFS(CHIP SELECT)
   	ldAddr(P0, REG_SPORT1_CTL_B);
 	
 //проверка свободного места буффера:
-_SPORT_Tranmit_Data.check_buf_reserve:
+_SPORT1B_Tranmit_Data.check_buf_reserve:
 	P1.L = LO(REG_SPORT1_CTL_B);	
 	P1.H = HI(REG_SPORT1_CTL_B);  
 	R1 = [P1];	
 	ld32(R1, BITM_SPORT_CTL_B_DXSPRI); 
 	R2 = R1 | R2; //проверка 32 бит значения
 	CC = R1 == R2;
-	IF CC JUMP _SPORT_Tranmit_Data.check_buf_reserve;
+	IF CC JUMP _SPORT1B_Tranmit_Data.check_buf_reserve;
 	
 //отгрузка данных - помещение их в буффер:    
     [P0 + LO(REG_SPORT1_TXPRI_B)] = R0; 
-_SPORT_Tranmit_Data.exit: 
+_SPORT1B_Tranmit_Data.exit: 
 	RTS;
-_SPORT_Tranmit_Data.end:
+_SPORT1B_Tranmit_Data.end:
 
 /*===========================================================*/
 /*               Функция передачи данных [SPORT0]            */
@@ -169,48 +169,45 @@ _SPORT_Tranmit_Data.end:
 //R0 - ccылка на данные
 .SECTION program
 .ALIGN 4;
-.GLOBAL _SPORT_Tranmit_Data;
-_SPORT_Tranmit_Data:
+.GLOBAL _SPORT0B_Tranmit_Data;
+_SPORT0B_Tranmit_Data:
 //half_B на передачу
 	ldAddr(P0, REG_SPORT0_CTL_B);
 	
-/*=========== МУЛЬТИПЛЕКСИРОВАНИЕ ПОРТОВ  ================*/
+/*=========== МУЛЬТИПЛЕКСИРОВАНИЕ ================*/
 	ldAddr(P1, REG_PORTF_FER);	// CS0, CS1
 	R1 = [P1];	//R1 - const
 	
 // GPIO:
-	R2 = BITM_PORT_FER_PX4 | BITM_PORT_FER_PX5;
+	R2 = ( BITM_PORT_FER_PX4 | BITM_PORT_FER_PX5 )(Z);
 	R2 = R1 | R2; 
 	[P1 + LO(REG_PORTF_FER)] = R1;
 	
 // ВЫХОД:
-	R2 = BITM_PORT_POL_PX4 | BITM_PORT_POL_PX5;
+	R2 = ( BITM_PORT_POL_PX4 | BITM_PORT_POL_PX5 )(Z);
 	R2 = R1 | R2; 
 	[P1 + LO(REG_PORTF_DIR)] = R1;
 	
-// ЛОГИЧЕСКОЕ СОСТОЯНИЕ:
-	R2 = ~( BITM_PORT_DATA_TGL_PX4 | BITM_PORT_DATA_TGL_PX5 );
+// ЛОГИЧЕСКОЕ СОСТОЯНИЕ: [оба на низкое состояние]
+	R2 = ~( BITM_PORT_DATA_TGL_PX4 | BITM_PORT_DATA_TGL_PX5 )(Z);
 	R2 = R1 & R2; 
 	[P1 + LO(REG_PORTD_DATA)] = R1;
 
-	
-
-
 //проверка свободного места буффера:
-_SPORT_Tranmit_Data.check_buf_reserve:
+_SPORT0B_Tranmit_Data.check_buf_reserve:
 	P1.L = LO(REG_SPORT0_CTL_B);	
 	P1.H = HI(REG_SPORT0_CTL_B);  
 	R1 = [P1];	
 	ld32(R1, BITM_SPORT_CTL_B_DXSPRI); 
 	R2 = R1 | R2; 
 	CC = R1 == R2;
-	IF CC JUMP _SPORT_Tranmit_Data.check_buf_reserve;
+	IF CC JUMP _SPORT0B_Tranmit_Data.check_buf_reserve;
 	
 //отгрузка данных - помещение их в буффер:    
     [P0 + LO(REG_SPORT0_TXPRI_B)] = R0; 
-_SPORT_Tranmit_Data.exit: 
+_SPORT0B_Tranmit_Data.exit: 
 	RTS;
-_SPORT_Tranmit_Data.end:
+_SPORT0B_Tranmit_Data.end:
 
 
 
