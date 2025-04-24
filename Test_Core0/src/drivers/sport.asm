@@ -174,22 +174,7 @@ _SPORT0B_Transmit_Data:
 //half_B на передачу
 	ldAddr(P0, REG_SPORT0_CTL_B);
 	
-/*=========== МУЛЬТИПЛЕКСИРОВАНИЕ ================*/
-/*	ldAddr(P1, REG_PORTF_FER);	// CS0, CS1
-	R1 = [P1];	//R1 - const
-// GPIO:
-	R2 = ( BITM_PORT_FER_PX4 | BITM_PORT_FER_PX5 )(Z);
-	R2 = R1 | R2; 
-	[P1 + LO(REG_PORTF_FER)] = R1;
-// ВЫХОД:  
-	R2 = ( BITM_PORT_POL_PX4 | BITM_PORT_POL_PX5 )(Z);
-	R2 = R1 | R2; 
-	[P1 + LO(REG_PORTF_DIR)] = R1;
-// ЛОГИЧЕСКОЕ СОСТОЯНИЕ: [оба на низкое состояние]
-	R2 = ~( BITM_PORT_DATA_TGL_PX4 );
-	R2 = R1 & R2; 
-	[P1 + LO(REG_PORTD_DATA)] = R1; */
-	
+/*=========== МУЛЬТИПЛЕКСИРОВАНИЕ ================*/	
 	P1.L = LO(REG_PORTF_FER);      
 	P1.H = HI(REG_PORTF_FER);
 	R1 = [P1];
@@ -226,6 +211,34 @@ _SPORT0B_Transmit_Data.check_buf_reserve:
 _SPORT0B_Transmit_Data.exit: 
 	RTS;
 _SPORT0B_Transmit_Data.end:
+
+/*===========================================================*/
+/*               Функция приема данных [SPORT0]              */
+/*===========================================================*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

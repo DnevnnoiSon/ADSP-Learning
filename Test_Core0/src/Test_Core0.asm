@@ -47,14 +47,20 @@ _main.Loop:
 _GPIO_Meandr.LoopBegin:
 	NOP;
 _GPIO_Meandr.LoopEnd:
-/*	R0.L = LO(0xF50);	// 0000 1111 0101 0000 1010
+
+
+
+
+
+/* sport - tests	
+	R0.L = LO(0xF50);	// 0000 1111 0101 0000 1010
 	R0.H = HI(0xF50); 
-	CALL _SPORT1B_Tranmit_Data; */
+	CALL _SPORT1B_Tranmit_Data;
 	
 	R0.L = LO(0xF50);	// 0000 1111 0101 0000 1010
 	R0.H = HI(0xF50); 
-	CALL _SPORT0B_Transmit_Data;
-	
+	CALL _SPORT0B_Transmit_Data; 
+*/	
 	JUMP _main.Loop;
 _main.end: 
 /* В sec.asm - реализован меандр по прерыванию */

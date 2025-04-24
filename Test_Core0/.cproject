@@ -31,8 +31,8 @@
 								<option id="assembler.option.additionaldirectories.243361262" name="Additional include directories (-I):" superClass="assembler.option.additionaldirectories" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM/Inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/GPIO/Inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/devices}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/drivers}&quot;"/>
 								</option>
 								<option id="assembler.option.outputlisting.866520231" name="Output listing file (-l)" superClass="assembler.option.outputlisting" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="assembler.option.savetempfiles.960808400" name="Save temporary files (-save-temps)" superClass="assembler.option.savetempfiles" useByScannerDiscovery="false" value="false" valueType="boolean"/>
@@ -55,6 +55,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/GPIO}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/devices}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/drivers}&quot;"/>
 								</option>
 								<option id="compiler.option.savetempfiles.186250486" name="Save temporary files (-save-temps)" superClass="compiler.option.savetempfiles" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<inputType id="compiler.inputType.927537121" name="C/C++ Source" superClass="compiler.inputType"/>
@@ -80,6 +82,8 @@
 								<option id="linker.option.additionaldirectories.595367397" name="Additional include directories (-I):" superClass="linker.option.additionaldirectories" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/GPIO}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/devices}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/drivers}&quot;"/>
 								</option>
 								<inputType id="linker.doj.input.1058223861" name="Object Files" superClass="linker.doj.input"/>
 							</tool>
@@ -96,8 +100,9 @@
 					</folderInfo>
 					<folderInfo id="blackfin.toolchain.configuration.debug.520050277.634000217" name="/" resourcePath="src/drivers">
 						<toolChain id="blackfin.toolchain.768797195" name="CrossCore Blackfin Toolchain" superClass="blackfin.toolchain" unusedChildren="">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="blackfin.platform" name="CrossCore Blackfin Target Platform" osList="all" superClass="blackfin.platform"/>
 							<tool id="blackfin.toolchain.assembler.836423877" name="CrossCore Blackfin Assembler" superClass="blackfin.toolchain.assembler.639360892">
-								<option id="assembler.option.additionaldirectories.1246410438" superClass="assembler.option.additionaldirectories" valueType="includePath">
+								<option id="assembler.option.additionaldirectories.1246410438" name="Additional include directories (-I):" superClass="assembler.option.additionaldirectories" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/drivers}&quot;"/>
@@ -105,7 +110,7 @@
 								<inputType id="assembler.input.514813609" name="Assembler Source" superClass="assembler.input"/>
 							</tool>
 							<tool id="blackfin.toolchain.compiler.155203029" name="CrossCore Blackfin C/C++ Compiler" superClass="blackfin.toolchain.compiler.2106295884">
-								<option id="compiler.option.additionaldirectories.406298510" superClass="compiler.option.additionaldirectories" valueType="includePath">
+								<option id="compiler.option.additionaldirectories.406298510" name="Additional include directories (-I):" superClass="compiler.option.additionaldirectories" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM}&quot;"/>
@@ -120,7 +125,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/drivers|GPIO|TIM|src/GPIO|src/TIM|system" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/devices|src/drivers|GPIO|TIM|src/GPIO|src/TIM|system" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src/devices"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src/drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="system"/>
 					</sourceEntries>
@@ -159,6 +165,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/GPIO}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/devices}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/drivers}&quot;"/>
 								</option>
 								<inputType id="assembler.input.680494314" name="Assembler Source" superClass="assembler.input"/>
 							</tool>
@@ -177,6 +185,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/GPIO}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/devices}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/drivers}&quot;"/>
 								</option>
 								<inputType id="compiler.inputType.418773395" name="C/C++ Source" superClass="compiler.inputType"/>
 							</tool>
@@ -198,6 +208,8 @@
 								<option id="linker.option.additionaldirectories.538447315" name="Additional include directories (-I):" superClass="linker.option.additionaldirectories" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/GPIO}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/devices}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/drivers}&quot;"/>
 								</option>
 								<inputType id="linker.doj.input.133032615" name="Object Files" superClass="linker.doj.input"/>
 							</tool>
@@ -214,8 +226,9 @@
 					</folderInfo>
 					<folderInfo id="blackfin.toolchain.configuration.release.1391181073.1192210377" name="/" resourcePath="src/drivers">
 						<toolChain id="blackfin.toolchain.223999770" name="CrossCore Blackfin Toolchain" superClass="blackfin.toolchain" unusedChildren="">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="blackfin.platform" name="CrossCore Blackfin Target Platform" osList="all" superClass="blackfin.platform"/>
 							<tool id="blackfin.toolchain.assembler.45945293" name="CrossCore Blackfin Assembler" superClass="blackfin.toolchain.assembler.732388531">
-								<option id="assembler.option.additionaldirectories.176555959" superClass="assembler.option.additionaldirectories" valueType="includePath">
+								<option id="assembler.option.additionaldirectories.176555959" name="Additional include directories (-I):" superClass="assembler.option.additionaldirectories" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/GPIO}&quot;"/>
@@ -224,7 +237,7 @@
 								<inputType id="assembler.input.1314655270" name="Assembler Source" superClass="assembler.input"/>
 							</tool>
 							<tool id="blackfin.toolchain.compiler.845208913" name="CrossCore Blackfin C/C++ Compiler" superClass="blackfin.toolchain.compiler.328714901">
-								<option id="compiler.option.additionaldirectories.1809759093" superClass="compiler.option.additionaldirectories" valueType="includePath">
+								<option id="compiler.option.additionaldirectories.1809759093" name="Additional include directories (-I):" superClass="compiler.option.additionaldirectories" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/system}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TIM}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/GPIO}&quot;"/>

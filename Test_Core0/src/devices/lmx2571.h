@@ -1,0 +1,4 @@
+#ifndef SRC_DEVICES_LMX2571_H_
+#define SRC_DEVICES_LMX2571_H_
+
+#endif /* SRC_DEVICES_LMX2571_H_ */
