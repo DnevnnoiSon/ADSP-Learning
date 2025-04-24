@@ -10,8 +10,8 @@
 .EXTERN _SystClock;
 .EXTERN _SEC_Init;
 .EXTERN _SPORT_Init;
-//.EXTERN _SPORT1B_Tranmit_Data;
-.EXTERN _SPORT0B_Tranmit_Data;
+//.EXTERN _SPORT1B_Transmit_Data;
+.EXTERN _SPORT0B_Transmit_Data;
 
 .SECTION L1_code;
 .ALIGN 4;
@@ -53,7 +53,7 @@ _GPIO_Meandr.LoopEnd:
 	
 	R0.L = LO(0xF50);	// 0000 1111 0101 0000 1010
 	R0.H = HI(0xF50); 
-	CALL _SPORT0B_Tranmit_Data;
+	CALL _SPORT0B_Transmit_Data;
 	
 	JUMP _main.Loop;
 _main.end: 
