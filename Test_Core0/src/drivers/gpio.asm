@@ -70,7 +70,7 @@ _GPIO_Control:
 	R1 = BITM_PORT_DATA_TGL_PX14;
 	R0 = R0 | R1;
 	[P0] = R0;
-	
+		
 	P0.L = LO(REG_PORTC_DATA);       /* BNC2 - LOW */
 	P0.H = HI(REG_PORTC_DATA);
 	R0 = [P0];	

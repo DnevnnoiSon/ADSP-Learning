@@ -10,8 +10,9 @@
 .EXTERN _SystClock;
 .EXTERN _SEC_Init;
 .EXTERN _SPORT_Init;
-//.EXTERN _SPORT1B_Transmit_Data;
 .EXTERN _SPORT0B_Transmit_Data;
+
+.EXTERN _LMX2571_Init;
 
 .SECTION L1_code;
 .ALIGN 4;
@@ -41,7 +42,7 @@ _main.Loop:
 	//CALL _GPIO_Triger_Overflow;
 	
 //блокирующая задержка - [разграничивать данные на осциле]
-	R0 = 100;	
+	R0 = 10000;	
 	P2 = R0; 	
 	LSETUP(_GPIO_Meandr.LoopBegin, _GPIO_Meandr.LoopEnd) LC0 = P2;
 _GPIO_Meandr.LoopBegin:
@@ -49,14 +50,10 @@ _GPIO_Meandr.LoopBegin:
 _GPIO_Meandr.LoopEnd:
 
 
-
+	CALL _LMX2571_Init;
 
 
 /* sport - tests	
-	R0.L = LO(0xF50);	// 0000 1111 0101 0000 1010
-	R0.H = HI(0xF50); 
-	CALL _SPORT1B_Tranmit_Data;
-	
 	R0.L = LO(0xF50);	// 0000 1111 0101 0000 1010
 	R0.H = HI(0xF50); 
 	CALL _SPORT0B_Transmit_Data; 
