@@ -198,16 +198,15 @@ _SPORT0B_Transmit_Data:
 
 //проверка свободного места буффера:
 _SPORT0B_Transmit_Data.check_buf_reserve:
-	P1.L = LO(REG_SPORT0_CTL_B);	
-	P1.H = HI(REG_SPORT0_CTL_B);  
-	R1 = [P1];	
-	ld32(R1, BITM_SPORT_CTL_B_DXSPRI); 
-	R2 = R1 | R2; 
-	CC = R1 == R2;
-	IF CC JUMP _SPORT0B_Transmit_Data.check_buf_reserve;
+    R1 = [P1];                      
+    R2 = BITM_SPORT_STAT_TXHRE;     
+    R3 = R1 & R2;
+    CC = R3 == 0;
+    IF CC JUMP _SPORT0B_Transmit_Data.check_buf_reserve;
 	
 //отгрузка данных - помещение их в буффер:    
     [P0 + LO(REG_SPORT0_TXPRI_B)] = R0; 
+    
 _SPORT0B_Transmit_Data.exit: 
 	RTS;
 _SPORT0B_Transmit_Data.end:

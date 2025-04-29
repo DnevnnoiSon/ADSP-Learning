@@ -88,7 +88,7 @@ _LMX2571_Init:
 	R0 = [P0];	
 	R1 = ~BITM_PORT_DATA_TGL_PX7;
 	R0 = R0 & R1;
-	[P0] = R0;
+	[P0] = R0;	//закрытие ключа
 //====================================//	
 	R0 = BITM_LMX_REG0_RESET(Z);
 	CALL _SPORT0B_Transmit_Data; 
@@ -98,8 +98,8 @@ _LMX2571_Init:
 		
 	R0 = CONFIG_COUNT;
 	P1 = R0; 	
-	LSETUP(_GPIO_Meandr.LoopBegin, _GPIO_Meandr.LoopEnd) LC0 = P1;
-_GPIO_Meandr.LoopBegin:
+	LSETUP(_GPIO_Meandr.TX_LoopBegin, _GPIO_Meandr.TX_LoopEnd) LC0 = P1;
+_GPIO_Meandr.TX_LoopBegin:
 	R0 = [P0];
 
 	[--SP] = P0;
@@ -115,7 +115,7 @@ _GPIO_Meandr.Delay_Loop:
     R0 = R0 - R2;
     CC = R0 == R1;
     IF !CC JUMP _GPIO_Meandr.Delay_Loop;  
-_GPIO_Meandr.LoopEnd:
+_GPIO_Meandr.TX_LoopEnd:
 	NOP;
 _LMX2571_Init.exit:
 	RETS = [SP++];
