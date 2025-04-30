@@ -36,7 +36,7 @@ _main.Init:
 	
 	//CALL _Timer_Run;
 //============== DEVICES ====================//	
-//	CALL _LMX2571_Init;
+	CALL _LMX2571_Init;
 //===========================================//	
 _main.Loop:
 //меандр по опросу флага триггера вх. сигнала: 
@@ -51,12 +51,13 @@ _main.Loop:
 _GPIO_Meandr.LoopBegin:
 	NOP;
 _GPIO_Meandr.LoopEnd:
-	
+
+/*	
 // sport - tests	
 	R0.L = LO(0xF50);	// 0000 1111 0101 0000 1010
 	R0.H = HI(0xF50); 
 	CALL _SPORT0B_Transmit_Data; 
-	
+*/	
 	JUMP _main.Loop;
 _main.end: 
 /* В sec.asm - реализован меандр по прерыванию */
