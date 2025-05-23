@@ -51,7 +51,6 @@ _main.Loop:
 _GPIO_Meandr.LoopBegin:
 	NOP;
 _GPIO_Meandr.LoopEnd:
-
 /*	
 // sport - tests	
 	R0.L = LO(0xF50);	// 0000 1111 0101 0000 1010
