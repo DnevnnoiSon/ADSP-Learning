@@ -206,6 +206,7 @@ _SPORT0B_Transmit_Data.check_buf_reserve:
 	CC = R1 == R2;
 	IF CC JUMP _SPORT0B_Transmit_Data.check_buf_reserve;
 */	
+
 //отгрузка данных - помещение их в буффер:    
     [P0 + LO(REG_SPORT0_TXPRI_B)] = R0; 
     

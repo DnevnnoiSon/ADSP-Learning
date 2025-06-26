@@ -57,7 +57,7 @@ It provides information needed to link your code. It can be used to configure me
 		<configuration id="com.analog.sourcegen.component.startup_ldf">
 			<startup_ldf-configuration>
 				<crt_and_ldf>
-					<propertygroup name="mandatory">
+					<propertygroup name="">
 						<property name="si_revision" value="0.2"/>
 						<property name="processor" value="ADSP-BF607"/>
 						<property name="product_name" value="CrossCore(R) Embedded Studio"/>
