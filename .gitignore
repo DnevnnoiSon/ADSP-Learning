@@ -1,5 +1,17 @@
 .metadata/
 
+RemoteSystemsTempFiles/
+
+Test_Core0/convert.h
+
+Test_Core1/system.svc
+Test_Core0/system.svc
+
+Test_Core0/system/
+Test_Core1/system/
+
+
+
 Test_Core0/Debug
 Test_Core1/Debug
 

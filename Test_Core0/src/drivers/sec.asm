@@ -11,21 +11,21 @@
 .SECTION program
 .ALIGN 4;
 .GLOBAL _SEC_Init;	
-/* Привязка: [EVENT <==> _sec_dispetcher] */
+/* РџСЂРёРІСЏР·РєР°: [EVENT <==> _sec_dispetcher] */
 _SEC_Init:
 	ldAddr(P0,REG_SEC0_GCTL);      
 	                        
-     R0 = ENUM_SEC_GCTL_EN;	  //включение SEC
+     R0 = ENUM_SEC_GCTL_EN;	  //РІРєР»СЋС‡РµРЅРёРµ SEC
     [P0+LO(REG_SEC0_GCTL)] = R0;   
      
-    R0 = ENUM_SEC_CCTL_EN;    //Разрешение прерываний по ядру
+    R0 = ENUM_SEC_CCTL_EN;    //Р Р°Р·СЂРµС€РµРЅРёРµ РїСЂРµСЂС‹РІР°РЅРёР№ РїРѕ СЏРґСЂСѓ
     [P0 + LO(REG_SEC0_CCTL0)] = R0;     
                             
-// Подключение источника в качестве прерывания:
+// РџРѕРґРєР»СЋС‡РµРЅРёРµ РёСЃС‚РѕС‡РЅРёРєР° РІ РєР°С‡РµСЃС‚РІРµ РїСЂРµСЂС‹РІР°РЅРёСЏ:
 	R0 =(0<<BITP_SEC_SCTL_CTG)                      
           | ENUM_SEC_SCTL_SRC_EN
           | ENUM_SEC_SCTL_INT_EN;      
-// Cопоставление источника с соответствующим SCI:                
+// CРѕРїРѕСЃС‚Р°РІР»РµРЅРёРµ РёСЃС‚РѕС‡РЅРёРєР° СЃ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј SCI:                
     [P0+LO(REG_SEC0_SCTL12)] = R0; 	// TIM0
     [P0+LO(REG_SEC0_SCTL23)] = R0;  // GPIOC-PIN2
                  
@@ -33,24 +33,24 @@ _SEC_Init.exit:
 	RTS;	
 _SEC_Init.end:
 
-//===== ОБРАБОТЧИК(ДИСПЕТЧЕР) НИЖНЕГО УРОВНЯ ===================
+//===== РћР‘Р РђР‘РћРўР§РРљ(Р”РРЎРџР•РўР§Р•Р ) РќРР–РќР•Р“Рћ РЈР РћР’РќРЇ ===================
 .GLOBAL __sec_int_dispatcher;
 __sec_int_dispatcher:
-//Сохранение контекста:
+//РЎРѕС…СЂР°РЅРµРЅРёРµ РєРѕРЅС‚РµРєСЃС‚Р°:
 	[--sp] = (R7:0, P5:0);
 	[--sp] = ASTAT;
     [--sp] = RETS;
-//ID текущего прерывания:
+//ID С‚РµРєСѓС‰РµРіРѕ РїСЂРµСЂС‹РІР°РЅРёСЏ:
 	ldAddr(P5, REG_SEC0_CSID0);
 	R7 = [P5 + LO(REG_SEC0_CSID0)];	
 	[p5+lo(REG_SEC0_CSID0)] = R7; 
 	
 __sec_int_dispatcher.timer:																		
-	//Прерывание от TIM0?
+	//РџСЂРµСЂС‹РІР°РЅРёРµ РѕС‚ TIM0?
 	R0 = INTR_TIMER0_TMR0;
 	CC = R7 == R0;
 	IF !CC JUMP __sec_int_dispatcher.gpio; 
-	//Обработчик (TIM0) верхнего уровня:
+	//РћР±СЂР°Р±РѕС‚С‡РёРє (TIM0) РІРµСЂС…РЅРµРіРѕ СѓСЂРѕРІРЅСЏ:
 	CALL _Timer0_ISR;
 
 	JUMP __sec_int_dispatcher.exit;
@@ -58,15 +58,15 @@ __sec_int_dispatcher.gpio:
 	R0 = INTR_PINT2_BLOCK;
 	CC = R7 == R0;
 	IF !CC JUMP __sec_int_dispatcher.exit; 
-	//Обработчик (GPIO) верхнего уровня:
+	//РћР±СЂР°Р±РѕС‚С‡РёРє (GPIO) РІРµСЂС…РЅРµРіРѕ СѓСЂРѕРІРЅСЏ:
 	CALL _GPIO_Trigger_ISR;
 	
 	JUMP __sec_int_dispatcher.exit;
-//====== Добаление новых обработчиков ======	
+//====== Р”РѕР±Р°Р»РµРЅРёРµ РЅРѕРІС‹С… РѕР±СЂР°Р±РѕС‚С‡РёРєРѕРІ ======	
 
 //==========================================
 __sec_int_dispatcher.exit:
-    //Подтверждение обработки прерывания:       	
+    //РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ РѕР±СЂР°Р±РѕС‚РєРё РїСЂРµСЂС‹РІР°РЅРёСЏ:       	
 	W[P5 + LO(REG_SEC0_END)] = R7;
 	
 	RETS = [sp++];

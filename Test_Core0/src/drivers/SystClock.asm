@@ -4,8 +4,8 @@
 .GLOBAL _Check_temp_SystClock;
 .GLOBAL _Change_PLL_Frequency;
 
-// R0 - Опрашиваемый Регистр
-// R1 - Значение маски
+// R0 - РћРїСЂР°С€РёРІР°РµРјС‹Р№ Р РµРіРёСЃС‚СЂ
+// R1 - Р—РЅР°С‡РµРЅРёРµ РјР°СЃРєРё
 #define  REG_SET_MASKAND(Reg1, Reg2) 	Reg2 = Reg2 & Reg1  //AND MASK								
 #define  REG_SET_MASKOR(Reg1, Reg2)		Reg2 = Reg1 | Reg2  //OR MASK
 																	
@@ -15,55 +15,55 @@
 _SystClock:
 _SystClock.init:
 	[--SP] = RETS;
-	//Проверка текущего состояния CGU_STAT:
+	//РџСЂРѕРІРµСЂРєР° С‚РµРєСѓС‰РµРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ CGU_STAT:
 	 R0 = 1;
 	 CALL _Check_temp_SystClock;
 	 	
-    //Изменение частоты PLL:
+    //РР·РјРµРЅРµРЅРёРµ С‡Р°СЃС‚РѕС‚С‹ PLL:
      CALL _Change_PLL_Frequency;
     
-    //Проверка завершения процесса:
+    //РџСЂРѕРІРµСЂРєР° Р·Р°РІРµСЂС€РµРЅРёСЏ РїСЂРѕС†РµСЃСЃР°:
      R0 = 0;
      CALL _Check_temp_SystClock;
      
      RETS = [SP++];
 	 RTS;
 _SystClock.error:
-//Опрос кодов ошибок
+//РћРїСЂРѕСЃ РєРѕРґРѕРІ РѕС€РёР±РѕРє
 //...
-//Обработка ошибок
+//РћР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РѕРє
 	RTS; 
 _SystClock.end:
 
-//================= ПРОВЕРКА ТЕКУЩЕГО СОСТОЯНИЯ ===================
-//СОГЛАШЕНИЕ: R0 - ЭЛЕМЕНТ ОТВЕЧАЮЩИЙ ЗА НАЛОЖЕНИЕ МАСКИ
+//================= РџР РћР’Р•Р РљРђ РўР•РљРЈР©Р•Р“Рћ РЎРћРЎРўРћРЇРќРРЇ ===================
+//РЎРћР“Р›РђРЁР•РќРР•: R0 - Р­Р›Р•РњР•РќРў РћРўР’Р•Р§РђР®Р©РР™ Р—Рђ РќРђР›РћР–Р•РќРР• РњРђРЎРљР
 .GLOBAL _Check_temp_SystClock;	
 .SECTION program
 .ALIGN 4;
 _Check_temp_SystClock:
-	R3 = R0;	//Выгрузка выбора наложения макси
+	R3 = R0;	//Р’С‹РіСЂСѓР·РєР° РІС‹Р±РѕСЂР° РЅР°Р»РѕР¶РµРЅРёСЏ РјР°РєСЃРё
 _Check_temp_SystClock.Start:
     P0.L =  LO(REG_CGU0_STAT);	
     P0.H =  HI(REG_CGU0_STAT);
 	R0 = [P0];
-//============ Наложение маски =================
+//============ РќР°Р»РѕР¶РµРЅРёРµ РјР°СЃРєРё =================
 	R1.L = LO(BITM_CGU_STAT_PLLEN);	
 	R1.H = HI(BITM_CGU_STAT_PLLEN);
 	REG_SET_MASKOR(R0, R1);
 	CC = R0 == R1;
 	IF !CC JUMP _Check_temp_SystClock.Start;
-//============ Наложение маски =================
+//============ РќР°Р»РѕР¶РµРЅРёРµ РјР°СЃРєРё =================
  _Check_temp_SystClock.PLOCK:
  	R1.L = LO(BITM_CGU_STAT_PLOCK);
 	R1.H = HI(BITM_CGU_STAT_PLOCK);
 	REG_SET_MASKOR(R0, R1);
 	CC = R0 == R1;
 	IF !CC JUMP _Check_temp_SystClock.Start;
-//=========== Выбор наложения маски ============================
+//=========== Р’С‹Р±РѕСЂ РЅР°Р»РѕР¶РµРЅРёСЏ РјР°СЃРєРё ============================
 	R1 = 1(Z);
 	CC = R3 == R1;
 	IF CC JUMP _Check_temp_SystClock.CLKSALGN;
-//============ Наложение маски =================	
+//============ РќР°Р»РѕР¶РµРЅРёРµ РјР°СЃРєРё =================	
 _Check_temp_SystClock.PLLBP:
 	R1.L = LO(BITM_CGU_STAT_PLLBP);	
 	R1.H = HI(BITM_CGU_STAT_PLLBP);	
@@ -71,7 +71,7 @@ _Check_temp_SystClock.PLLBP:
 	CC = R1 == 0;
 	IF !CC JUMP _Check_temp_SystClock.Start;
 //===============================================================
-//============ Наложение маски =================
+//============ РќР°Р»РѕР¶РµРЅРёРµ РјР°СЃРєРё =================
 _Check_temp_SystClock.CLKSALGN:
 	R1.L = LO(BITM_CGU_STAT_CLKSALGN);	
 	R1.H = HI(BITM_CGU_STAT_CLKSALGN);	
@@ -84,44 +84,44 @@ _Check_temp_SystClock.CLKSALGN:
 _Check_temp_SystClock.end:
 
 
-//================ НАСТРОЙКА КОЭФФИЦИЕНТОВ ДЛЯ ЧАСТОТЫ PLL ===================
+//================ РќРђРЎРўР РћР™РљРђ РљРћР­Р¤Р¤РР¦РР•РќРўРћР’ Р”Р›РЇ Р§РђРЎРўРћРўР« PLL ===================
 .GLOBAL _Change_PLL_Frequency;
 .SECTION program
 .ALIGN 4;
 _Change_PLL_Frequency:
-//============= Отключение PLL =======================
+//============= РћС‚РєР»СЋС‡РµРЅРёРµ PLL =======================
 	P0.L = LO(REG_CGU0_CTL);	
     P0.H = HI(REG_CGU0_CTL);
-//============= Включение режима bypass =======================
+//============= Р’РєР»СЋС‡РµРЅРёРµ СЂРµР¶РёРјР° bypass =======================
     R0 = [P0];  
     
-    BITCLR(R0, BITP_CGU_STAT_PLLEN);  //обновление
+    BITCLR(R0, BITP_CGU_STAT_PLLEN);  //РѕР±РЅРѕРІР»РµРЅРёРµ
     BITSET(R0, BITP_CGU_STAT_PLLBP);  //bypass ON 
     
     [P0] = R0; 
-//=== Установка коэффициентов деления/множителей =====
+//=== РЈСЃС‚Р°РЅРѕРІРєР° РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ РґРµР»РµРЅРёСЏ/РјРЅРѕР¶РёС‚РµР»РµР№ =====
 	P0.L =  LO(REG_CGU0_CTL);	
     P0.H =  HI(REG_CGU0_CTL);
     R0 = [P0];
-	// Очистка полей MSEL, DF
+	// РћС‡РёСЃС‚РєР° РїРѕР»РµР№ MSEL, DF
 	R2 = ~((BITM_CGU_CTL_MSEL) | (BITM_CGU_CTL_DF)); 
 	R0 = R0 & R2;
-	//Сгенерить: 
+	//РЎРіРµРЅРµСЂРёС‚СЊ: 
 	R1 = ((40 << BITP_CGU_CTL_MSEL) | ( 1 << BITP_CGU_CTL_DF));    
 	R0 = R0 | R1; 
 	
-	BITCLR(R0, BITP_CGU_CTL_LOCK);  //бит LOCK -> CGU_CTL
+	BITCLR(R0, BITP_CGU_CTL_LOCK);  //Р±РёС‚ LOCK -> CGU_CTL
 	[P0] = R0;
-//Частота PLL[ЯДРА] = 480 МГц
+//Р§Р°СЃС‚РѕС‚Р° PLL[РЇР”Р Рђ] = 480 РњР“С†
 	
 	P0.L = LO(REG_CGU0_DIV);
     P0.H = HI(REG_CGU0_DIV);
 	R0 = [P0];
-	// Очистка полей SCEL, S0SEL
+	// РћС‡РёСЃС‚РєР° РїРѕР»РµР№ SCEL, S0SEL
 	R2.H = HI(~((BITM_CGU_DIV_CSEL) | (BITM_CGU_DIV_S0SEL) | (BITM_CGU_DIV_S1SEL) | (BITM_CGU_DIV_SYSSEL)));
 	R2.L = LO(~((BITM_CGU_DIV_CSEL) | (BITM_CGU_DIV_S0SEL) | (BITM_CGU_DIV_S1SEL) | (BITM_CGU_DIV_SYSSEL)));
 	R0 = R0 & R2;
-	//Сгенерить: 
+	//РЎРіРµРЅРµСЂРёС‚СЊ: 
 	R1.L = LO((( 1 << BITP_CGU_DIV_CSEL)|
 	         ( 4 << BITP_CGU_DIV_S0SEL) | 
 	         ( 4 << BITP_CGU_DIV_S1SEL) |
@@ -133,16 +133,16 @@ _Change_PLL_Frequency:
 	     
 	R0 = R0 | R1;
 	
-	BITSET(R0, BITP_CGU_DIV_UPDT);	//бит UPDT -> CGU_DIV
+	BITSET(R0, BITP_CGU_DIV_UPDT);	//Р±РёС‚ UPDT -> CGU_DIV
 	[P0] = R0;
-//Частота на выходе SOCLK: 120МГц
-//============= Включение PLL =======================	
+//Р§Р°СЃС‚РѕС‚Р° РЅР° РІС‹С…РѕРґРµ SOCLK: 120РњР“С†
+//============= Р’РєР»СЋС‡РµРЅРёРµ PLL =======================	
 	P0.L =  LO(REG_CGU0_CTL);	
     P0.H =  HI(REG_CGU0_CTL);
     R0 = [P0];
-    //============= Отключение режима bypass =======================   
+    //============= РћС‚РєР»СЋС‡РµРЅРёРµ СЂРµР¶РёРјР° bypass =======================   
     BITCLR(R0, BITP_CGU_STAT_PLLBP);  //bypass OFF (PLLBP = 0)
-    BITSET(R0, BITP_CGU_STAT_PLLEN);  //обновление
+    BITSET(R0, BITP_CGU_STAT_PLLEN);  //РѕР±РЅРѕРІР»РµРЅРёРµ
     
     [P0] = R0; 
 	

@@ -1,8 +1,8 @@
 #include "asm_def.h"
 #include "defBF607.h"
-/*========== НАСТРОЙКА ПОД ИНТЕРФЕЙС ДЛЯ SPI ==================*/
+/*========== РќРђРЎРўР РћР™РљРђ РџРћР” РРќРўР•Р Р¤Р•Р™РЎ Р”Р›РЇ SPI ==================*/
 /*=============================================================*/
-/*                    МОДУЛЬ [SPORT]                           */
+/*                    РњРћР”РЈР›Р¬ [SPORT]                           */
 /*=============================================================*/
 #include "sport.h"
 
@@ -22,22 +22,22 @@ _SPORT_Init.exit:
 _SPORT_Init.end:
 
 
-/* Инициализация SPORT1 */
+/* РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ SPORT1 */
 .SECTION program
 .ALIGN 4;
 .GLOBAL _SPORT1B_Init;
 _SPORT1B_Init:	
-//настройка переферийнных пинов:     
-//  CALL _SPORT_GPIO_Init; - на данный момент задаётся в UI
+//РЅР°СЃС‚СЂРѕР№РєР° РїРµСЂРµС„РµСЂРёР№РЅРЅС‹С… РїРёРЅРѕРІ:     
+//  CALL _SPORT_GPIO_Init; - РЅР° РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ Р·Р°РґР°С‘С‚СЃСЏ РІ UI
     
     ldAddr(P0, REG_SPORT1_CTL_B);
-// Очистка управляющих регистров sport:
+// РћС‡РёСЃС‚РєР° СѓРїСЂР°РІР»СЏСЋС‰РёС… СЂРµРіРёСЃС‚СЂРѕРІ sport:
     R0 = 0(z);
     [P0+LO(REG_SPORT1_CTL_B)] = R0;	 //..OPMODE 
     [P0+LO(REG_SPORT1_MCTL_B)] = R0; //..MCE                                         
     
     //CLK = SCLK0 / ( 1 + DIV)
-    //Частота следования сигнала FS в периодах CLK  
+    //Р§Р°СЃС‚РѕС‚Р° СЃР»РµРґРѕРІР°РЅРёСЏ СЃРёРіРЅР°Р»Р° FS РІ РїРµСЂРёРѕРґР°С… CLK  
     ld32( R0, (3  << BITP_SPORT_DIV_CLKDIV) | ( 24 << BITP_SPORT_DIV_FSDIV) );              
     [P0+LO(REG_SPORT1_DIV_B)] = R0;  
        
@@ -67,18 +67,18 @@ _SPORT1B_Init.exit:
 	RTS;
 _SPORT1B_Init.end:
 
-/* Инициализация SPORT0 */
+/* РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ SPORT0 */
 .SECTION program
 .ALIGN 4;
 .GLOBAL _SPORT0B_Init;
 _SPORT0B_Init:
-//настройка переферийнных пинов: [задаётся в UI]
+//РЅР°СЃС‚СЂРѕР№РєР° РїРµСЂРµС„РµСЂРёР№РЅРЅС‹С… РїРёРЅРѕРІ: [Р·Р°РґР°С‘С‚СЃСЏ РІ UI]
 	ldAddr(P0, REG_SPORT0_CTL_B);
-//Очистка управляющих регистров sport:
+//РћС‡РёСЃС‚РєР° СѓРїСЂР°РІР»СЏСЋС‰РёС… СЂРµРіРёСЃС‚СЂРѕРІ sport:
     R0 = 0(z);
     [P0+LO(REG_SPORT0_CTL_B)] = R0;	 //..OPMODE 
     [P0+LO(REG_SPORT0_MCTL_B)] = R0; //..MCE     
-//Частота следования сигнала FS в периодах CLK  
+//Р§Р°СЃС‚РѕС‚Р° СЃР»РµРґРѕРІР°РЅРёСЏ СЃРёРіРЅР°Р»Р° FS РІ РїРµСЂРёРѕРґР°С… CLK  
 	ld32( R0, (3  << BITP_SPORT_DIV_CLKDIV) | ( 24 << BITP_SPORT_DIV_FSDIV) );  
 	
 	[P0+LO(REG_SPORT0_DIV_B)] = R0;  
@@ -109,13 +109,13 @@ _SPORT0B_Init.exit:
 _SPORT0B_Init.end:
 
 
-/* настройка SPORT1B ножек */
+/* РЅР°СЃС‚СЂРѕР№РєР° SPORT1B РЅРѕР¶РµРє */
 .SECTION program
 .ALIGN 4;
 .GLOBAL _SPORT_GPIO_Init;
 _SPORT_GPIO_Init:
 //PE4 ---> CLK:	
-	// Периферийный
+	// РџРµСЂРёС„РµСЂРёР№РЅС‹Р№
 	P0.H = HI(REG_PORTE_FER);
 	P0.L = LO(REG_PORTE_FER);
 	R0 = [P0];
@@ -136,45 +136,45 @@ _SPORT_GPIO_Init:
 _SPORT_GPIO_Init.end: 
 
 /*===========================================================*/
-/*               Функция передачи данных [SPORT1]            */
+/*               Р¤СѓРЅРєС†РёСЏ РїРµСЂРµРґР°С‡Рё РґР°РЅРЅС‹С… [SPORT1]            */
 /*===========================================================*/
-//R0 - ccылка на данные
+//R0 - ccС‹Р»РєР° РЅР° РґР°РЅРЅС‹Рµ
 .SECTION program
 .ALIGN 4;
 .GLOBAL _SPORT1B_Transmit_Data;
 _SPORT1B_Transmit_Data:
-//half_B на передачу
+//half_B РЅР° РїРµСЂРµРґР°С‡Сѓ
 //PE3 ---> BFS(CHIP SELECT)
   	ldAddr(P0, REG_SPORT1_CTL_B);
 	
-//проверка свободного места буффера:
+//РїСЂРѕРІРµСЂРєР° СЃРІРѕР±РѕРґРЅРѕРіРѕ РјРµСЃС‚Р° Р±СѓС„С„РµСЂР°:
 _SPORT1B_Transmit_Data.check_buf_reserve:
 	P1.L = LO(REG_SPORT1_CTL_B);	
 	P1.H = HI(REG_SPORT1_CTL_B);  
 	R1 = [P1];	
 	ld32(R1, BITM_SPORT_CTL_B_DXSPRI); 
-	R2 = R1 | R2; //проверка 32 бит значения
+	R2 = R1 | R2; //РїСЂРѕРІРµСЂРєР° 32 Р±РёС‚ Р·РЅР°С‡РµРЅРёСЏ
 	CC = R1 == R2;
 	IF CC JUMP _SPORT1B_Transmit_Data.check_buf_reserve;
 	
-//отгрузка данных - помещение их в буффер:    
+//РѕС‚РіСЂСѓР·РєР° РґР°РЅРЅС‹С… - РїРѕРјРµС‰РµРЅРёРµ РёС… РІ Р±СѓС„С„РµСЂ:    
     [P0 + LO(REG_SPORT1_TXPRI_B)] = R0; 
 _SPORT1B_Transmit_Data.exit: 
 	RTS;
 _SPORT1B_Transmit_Data.end:
 
 /*===========================================================*/
-/*               Функция передачи данных [SPORT0]            */
+/*               Р¤СѓРЅРєС†РёСЏ РїРµСЂРµРґР°С‡Рё РґР°РЅРЅС‹С… [SPORT0]            */
 /*===========================================================*/
-//R0 - ccылка на данные
+//R0 - ccС‹Р»РєР° РЅР° РґР°РЅРЅС‹Рµ
 .SECTION program
 .ALIGN 4;
 .GLOBAL _SPORT0B_Transmit_Data;
 _SPORT0B_Transmit_Data:
-//half_B на передачу
+//half_B РЅР° РїРµСЂРµРґР°С‡Сѓ
 	ldAddr(P0, REG_SPORT0_CTL_B);
 	
-/*=========== МУЛЬТИПЛЕКСИРОВАНИЕ ================*/	
+/*=========== РњРЈР›Р¬РўРРџР›Р•РљРЎРР РћР’РђРќРР• ================*/	
 	P1.L = LO(REG_PORTF_FER);      
 	P1.H = HI(REG_PORTF_FER);
 	R1 = [P1];
@@ -196,7 +196,7 @@ _SPORT0B_Transmit_Data:
 	R1 = R1 & R2;
 	[P1] = R1;
 /*
-//проверка свободного места буффера:
+//РїСЂРѕРІРµСЂРєР° СЃРІРѕР±РѕРґРЅРѕРіРѕ РјРµСЃС‚Р° Р±СѓС„С„РµСЂР°:
 _SPORT0B_Transmit_Data.check_buf_reserve:
 	P1.L = LO(REG_SPORT0_CTL_B);	
 	P1.H = HI(REG_SPORT0_CTL_B);  
@@ -207,7 +207,7 @@ _SPORT0B_Transmit_Data.check_buf_reserve:
 	IF CC JUMP _SPORT0B_Transmit_Data.check_buf_reserve;
 */	
 
-//отгрузка данных - помещение их в буффер:    
+//РѕС‚РіСЂСѓР·РєР° РґР°РЅРЅС‹С… - РїРѕРјРµС‰РµРЅРёРµ РёС… РІ Р±СѓС„С„РµСЂ:    
     [P0 + LO(REG_SPORT0_TXPRI_B)] = R0; 
     
 _SPORT0B_Transmit_Data.exit: 
